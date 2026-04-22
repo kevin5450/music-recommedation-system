@@ -61,15 +61,3 @@
 * **Metric**: 'Precision@5', '10 Scale Score'
 
 ---
-
-##  Project Structure
-
-```bash
-├── music-core-server (Java/Spring Boot)
-│   ├── src/main/java/...      # 비즈니스 로직 및 API 컨트롤러
-│   └── build.gradle           # 의존성 관리 (Spring Data MongoDB 등)
-├── music-rec-engine (Python/Flask)
-│   ├── app.py                 # Flask API 서버
-│   ├── model/                 # Word2Vec 모델 및 벡터 데이터
-│   └── utils/                 # 유사도 계산 로직
-└── frontend/                  # HTML/CSS/JS 인터페이스
