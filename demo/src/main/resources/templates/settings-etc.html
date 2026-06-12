@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Settings — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/settings.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <div class="navbar-links">
+      <a href="/Mainpage">Home</a>
+      <a href="/Settings">Settings</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <div class="page-back">
+      <a href="/Settings" class="back-link">← Settings</a>
+    </div>
+
+    <section class="page-header">
+      <h1 class="page-title">General</h1>
+      <p class="page-subtitle">Notifications and privacy</p>
+    </section>
+
+    <section class="settings-list">
+      <div class="settings-row settings-row--toggle">
+        <div class="settings-row-info">
+          <h2 class="settings-row-title">Newsletter</h2>
+          <p class="settings-row-desc">Receive updates about new features</p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" name="newsletter">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="settings-row settings-row--toggle">
+        <div class="settings-row-info">
+          <h2 class="settings-row-title">Notifications</h2>
+          <p class="settings-row-desc">Get notified about new recommendations</p>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" name="notifications">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Fluffy Music. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

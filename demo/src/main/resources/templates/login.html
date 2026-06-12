@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <div class="navbar-links">
+      <a href="/register">Create Account</a>
+    </div>
+  </nav>
+
+  <main class="auth-main">
+    <section class="auth-card">
+
+      <h1 class="auth-title">Sign In</h1>
+      <p class="auth-subtitle">to continue to Fluffy Music</p>
+
+      <div th:if="${error}" class="error-banner">
+        <p th:text="${error}"></p>
+      </div>
+
+      <form action="/login" method="POST" class="auth-form">
+        <div class="form-group">
+          <label for="userid">User ID</label>
+          <input id="userid" name="userid" type="text" placeholder="Enter your ID"
+                 th:value="${userid}" maxlength="10" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Enter your password"
+                 maxlength="10" required>
+        </div>
+        <div class="form-check">
+          <input id="rememberme" name="rememberme" type="checkbox" value="1">
+          <label for="rememberme">Keep me signed in</label>
+        </div>
+        <button type="submit" class="btn-primary">Sign In</button>
+      </form>
+
+      <div class="auth-footer">
+        <a href="/forgot-id" class="link-subtle">Forgot ID?</a>
+        <span class="divider">·</span>
+        <a href="/forgot-password" class="link-subtle">Forgot Password?</a>
+      </div>
+
+      <div class="auth-register">
+        <span>Don't have an account?</span>
+        <a href="/register" class="link-primary">Create one</a>
+      </div>
+
+    </section>
+  </main>
+
+</body>
+</html>

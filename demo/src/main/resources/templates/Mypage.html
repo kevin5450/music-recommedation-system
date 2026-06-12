@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/mypage.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <div class="navbar-links">
+      <a href="/Mainpage">Home</a>
+      <a href="/recommendationpage">Discover</a>
+      <a href="/Settings">Settings</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <section class="page-header">
+      <h1 class="page-title">My Page</h1>
+      <p class="page-subtitle">Your music, all in one place.</p>
+    </section>
+
+    <section class="mypage-grid">
+      <a href="/mypage-myplaylist" class="mypage-card">
+        <div class="mypage-card-icon">♪</div>
+        <h2 class="mypage-card-title">My Playlist</h2>
+        <p class="mypage-card-desc">Songs you've saved</p>
+      </a>
+      <a href="/mypage-likedartist" class="mypage-card">
+        <div class="mypage-card-icon">★</div>
+        <h2 class="mypage-card-title">Favorite Artists</h2>
+        <p class="mypage-card-desc">Artists you love</p>
+      </a>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Fluffy Music. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

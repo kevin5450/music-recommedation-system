@@ -1,0 +1,485 @@
+<html>
+<head>
+<title>recommendation.js</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #bcbec4;}
+.s1 { color: #6aab73;}
+.s2 { color: #cf8e6d;}
+.s3 { color: #7a7e85;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+recommendation.js</font>
+</center></td></tr></table>
+<pre><span class="s0">const API_BASE = </span><span class="s1">&quot;http://127.0.0.1:5000&quot;</span><span class="s0">;</span>
+<span class="s2">function </span><span class="s0">makeRangeQuery(ranges) {</span>
+  <span class="s2">if </span><span class="s0">(!ranges || !ranges.length) </span><span class="s2">return </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+  <span class="s2">return </span><span class="s0">ranges.map(([a,b]) =&gt; `&amp;start_year=${a}&amp;end_year=${b}`).join(</span><span class="s1">&quot;&quot;</span><span class="s0">);</span>
+<span class="s0">}</span>
+<span class="s0">const ENDPOINTS = {</span>
+  <span class="s0">content: (user, ranges) =&gt;</span>
+    <span class="s0">`${API_BASE}/recommend/content?user=${encodeURIComponent(user)}${makeRangeQuery(ranges)}`,</span>
+  <span class="s0">collab:  (user, ranges) =&gt;</span>
+    <span class="s0">`${API_BASE}/recommend/collab?user=${encodeURIComponent(user)}${makeRangeQuery(ranges)}`,</span>
+  <span class="s0">hybrid:  (user, ranges) =&gt;</span>
+    <span class="s0">`${API_BASE}/recommend/hybrid?user=${encodeURIComponent(user)}${makeRangeQuery(ranges)}`,</span>
+  <span class="s0">theme:   (user, q, ranges) =&gt;</span>
+    <span class="s0">`${API_BASE}/recommend/theme?user=${encodeURIComponent(user)}&amp;query=${encodeURIComponent(q)}${makeRangeQuery(ranges)}`,</span>
+  <span class="s0">feedback: `${API_BASE}/feedback/like`,</span>
+  <span class="s0">overall:  `${API_BASE}/feedback/overall`,</span>
+  <span class="s0">submit:   `${API_BASE}/feedback/submit`</span>
+<span class="s0">};</span>
+
+<span class="s3">/* ============== UI utils ============== */</span>
+<span class="s0">const UI = {</span>
+  <span class="s0">showSection(id) {</span>
+    <span class="s0">document.querySelectorAll(</span><span class="s1">'.content-section'</span><span class="s0">).forEach(s =&gt; s.classList.remove(</span><span class="s1">'active'</span><span class="s0">));</span>
+    <span class="s0">document.getElementById(id).classList.add(</span><span class="s1">'active'</span><span class="s0">);</span>
+  <span class="s0">},</span>
+  <span class="s0">getUser(inputId = </span><span class="s1">&quot;user-name&quot;</span><span class="s0">) {</span>
+    <span class="s0">const v = document.getElementById(inputId)?.value?.trim() || </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+    <span class="s2">if </span><span class="s0">(!v) { alert(</span><span class="s1">&quot;사용자명을 입력해주세요.&quot;</span><span class="s0">); </span><span class="s2">throw new </span><span class="s0">Error(</span><span class="s1">&quot;사용자 없음&quot;</span><span class="s0">); }</span>
+    <span class="s2">return </span><span class="s0">v;</span>
+  <span class="s0">},</span>
+  <span class="s0">getQuery() {</span>
+    <span class="s0">const v = document.getElementById(</span><span class="s1">&quot;query&quot;</span><span class="s0">)?.value?.trim() || </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+    <span class="s2">if </span><span class="s0">(!v) { alert(</span><span class="s1">&quot;문장을 입력해주세요.&quot;</span><span class="s0">); </span><span class="s2">throw new </span><span class="s0">Error(</span><span class="s1">&quot;쿼리 없음&quot;</span><span class="s0">); }</span>
+    <span class="s2">return </span><span class="s0">v;</span>
+  <span class="s0">},</span>
+  <span class="s0">createOverallRating(section) {</span>
+    <span class="s0">const wrap = document.createElement(</span><span class="s1">&quot;div&quot;</span><span class="s0">);</span>
+    <span class="s0">wrap.className = </span><span class="s1">&quot;overall-rating&quot;</span><span class="s0">;</span>
+    <span class="s0">wrap.innerHTML = `&lt;p style=</span><span class="s1">&quot;margin:10px 0 5px;&quot;</span><span class="s0">&gt;이 추천 결과에 대한 전체적인 분위기 평가&lt;/p&gt;`;</span>
+    <span class="s0">const group = document.createElement(</span><span class="s1">&quot;div&quot;</span><span class="s0">);</span>
+    <span class="s0">group.className = </span><span class="s1">&quot;rating-buttons&quot;</span><span class="s0">;</span>
+    <span class="s0">group.dataset.type = section;</span>
+    <span class="s0">group.innerHTML = Array.from({length:</span><span class="s4">10</span><span class="s0">}, (_,i)=&gt;`&lt;button data-score=</span><span class="s1">&quot;${i+1}&quot;</span><span class="s0">&gt;${i+</span><span class="s4">1</span><span class="s0">}&lt;/button&gt;`).join(</span><span class="s1">&quot;&quot;</span><span class="s0">);</span>
+    <span class="s0">wrap.appendChild(group);</span>
+    <span class="s0">group.querySelectorAll(</span><span class="s1">&quot;button&quot;</span><span class="s0">).forEach(btn=&gt;{</span>
+      <span class="s0">btn.addEventListener(</span><span class="s1">&quot;click&quot;</span><span class="s0">, ()=&gt;{</span>
+        <span class="s0">group.querySelectorAll(</span><span class="s1">&quot;button&quot;</span><span class="s0">).forEach(b=&gt;b.classList.remove(</span><span class="s1">&quot;selected&quot;</span><span class="s0">));</span>
+        <span class="s0">btn.classList.add(</span><span class="s1">&quot;selected&quot;</span><span class="s0">);</span>
+        <span class="s0">console.log(`[평가 - ${section}] 전체 점수: ${btn.dataset.score}`);</span>
+      <span class="s0">});</span>
+    <span class="s0">});</span>
+    <span class="s2">return </span><span class="s0">wrap;</span>
+  <span class="s0">},</span>
+  <span class="s0">createProgress() {</span>
+    <span class="s0">const d = document.createElement(</span><span class="s1">&quot;div&quot;</span><span class="s0">);</span>
+    <span class="s0">d.className = </span><span class="s1">&quot;rating-progress&quot;</span><span class="s0">;</span>
+    <span class="s0">d.textContent = </span><span class="s1">&quot;선택한 노래: 0 / 0&quot;</span><span class="s0">;</span>
+    <span class="s2">return </span><span class="s0">d;</span>
+  <span class="s0">},</span>
+  <span class="s0">createSubmitButton(label=</span><span class="s1">&quot;전체 제출&quot;</span><span class="s0">) {</span>
+    <span class="s0">const b = document.createElement(</span><span class="s1">&quot;button&quot;</span><span class="s0">);</span>
+    <span class="s0">b.className = </span><span class="s1">&quot;submit-button&quot;</span><span class="s0">;</span>
+    <span class="s0">b.textContent = label;</span>
+    <span class="s0">b.disabled = </span><span class="s2">true</span><span class="s0">;</span>
+    <span class="s0">b.title = </span><span class="s1">&quot;모든 항목을 평가해야 제출할 수 있습니다.&quot;</span><span class="s0">;</span>
+    <span class="s2">return </span><span class="s0">b;</span>
+  <span class="s0">},</span>
+  <span class="s0">setSubmitEnabled(btn, enabled) {</span>
+    <span class="s0">btn.disabled = !enabled;</span>
+    <span class="s0">btn.classList.toggle(</span><span class="s1">&quot;enabled&quot;</span><span class="s0">, !!enabled);</span>
+    <span class="s0">btn.title = enabled ? </span><span class="s1">&quot;&quot; </span><span class="s0">: </span><span class="s1">&quot;모든 항목을 평가해야 제출할 수 있습니다.&quot;</span><span class="s0">;</span>
+  <span class="s0">}</span>
+<span class="s0">};</span>
+
+<span class="s3">/* ============== Rating logic ============== */</span>
+<span class="s2">function </span><span class="s0">mapStarsToScore(count) {</span>
+  <span class="s2">return </span><span class="s0">(count===</span><span class="s4">3</span><span class="s0">) ? </span><span class="s4">3 </span><span class="s0">: (count===</span><span class="s4">2 </span><span class="s0">? </span><span class="s4">2 </span><span class="s0">: (count===</span><span class="s4">1 </span><span class="s0">? </span><span class="s4">0 </span><span class="s0">: -</span><span class="s4">1</span><span class="s0">));</span>
+<span class="s0">}</span>
+<span class="s2">function </span><span class="s0">attachStarEvents(starContainer, title, liEl) {</span>
+  <span class="s0">let current = parseInt(liEl.dataset.ratingStars || </span><span class="s1">&quot;&quot;</span><span class="s0">);</span>
+  <span class="s0">const stars = starContainer.querySelectorAll(</span><span class="s1">'span[data-value]'</span><span class="s0">);</span>
+  <span class="s0">const applyVisual = (n) =&gt; stars.forEach((s,idx)=&gt; s.classList.toggle(</span><span class="s1">'selected'</span><span class="s0">, idx &lt; n));</span>
+  <span class="s2">if </span><span class="s0">(!isNaN(current)) applyVisual(current);</span>
+  <span class="s0">stars.forEach(star=&gt;{</span>
+    <span class="s0">const v = parseInt(star.dataset.value, </span><span class="s4">10</span><span class="s0">);</span>
+    <span class="s0">star.addEventListener(</span><span class="s1">'mouseover'</span><span class="s0">, ()=&gt; {</span>
+      <span class="s0">stars.forEach(s =&gt; s.classList.toggle(</span><span class="s1">'hovered'</span><span class="s0">, parseInt(s.dataset.value,</span><span class="s4">10</span><span class="s0">) &lt;= v));</span>
+    <span class="s0">});</span>
+    <span class="s0">star.addEventListener(</span><span class="s1">'mouseout'</span><span class="s0">, ()=&gt; {</span>
+      <span class="s0">stars.forEach(s =&gt; s.classList.remove(</span><span class="s1">'hovered'</span><span class="s0">));</span>
+    <span class="s0">});</span>
+    <span class="s0">star.addEventListener(</span><span class="s1">'click'</span><span class="s0">, ()=&gt; {</span>
+      <span class="s0">current = (current === v) ? </span><span class="s4">0 </span><span class="s0">: v;</span>
+      <span class="s0">applyVisual(current);</span>
+      <span class="s0">const score = mapStarsToScore(current);</span>
+      <span class="s0">liEl.dataset.ratingStars = String(current);</span>
+      <span class="s0">liEl.dataset.ratingScore = String(score);</span>
+      <span class="s0">liEl.dispatchEvent(</span><span class="s2">new </span><span class="s0">CustomEvent(</span><span class="s1">'ratingchange'</span><span class="s0">, { bubbles: </span><span class="s2">true </span><span class="s0">}));</span>
+    <span class="s0">});</span>
+  <span class="s0">});</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ====== 선택 버튼 전용: 선택(=3★) ↔ 해제(=0★) ====== */</span>
+<span class="s2">function </span><span class="s0">attachSelectEvents(selectBtn, liEl) {</span>
+  <span class="s0">const setState = (selected) =&gt; {</span>
+    <span class="s2">if </span><span class="s0">(selected) {</span>
+      <span class="s0">liEl.dataset.ratingStars = </span><span class="s1">&quot;3&quot;</span><span class="s0">;</span>
+      <span class="s0">liEl.dataset.ratingScore = </span><span class="s1">&quot;3&quot;</span><span class="s0">;</span>
+      <span class="s0">selectBtn.textContent = </span><span class="s1">&quot;선택됨&quot;</span><span class="s0">;</span>
+      <span class="s0">selectBtn.classList.add(</span><span class="s1">&quot;selected&quot;</span><span class="s0">);</span>
+    <span class="s0">} </span><span class="s2">else </span><span class="s0">{</span>
+      <span class="s0">liEl.dataset.ratingStars = </span><span class="s1">&quot;0&quot;</span><span class="s0">;</span>
+      <span class="s0">liEl.dataset.ratingScore = </span><span class="s1">&quot;0&quot;</span><span class="s0">;</span>
+      <span class="s0">selectBtn.textContent = </span><span class="s1">&quot;선택&quot;</span><span class="s0">;</span>
+      <span class="s0">selectBtn.classList.remove(</span><span class="s1">&quot;selected&quot;</span><span class="s0">);</span>
+    <span class="s0">}</span>
+    <span class="s0">liEl.dispatchEvent(</span><span class="s2">new </span><span class="s0">CustomEvent(</span><span class="s1">'ratingchange'</span><span class="s0">, { bubbles: </span><span class="s2">true </span><span class="s0">}));</span>
+  <span class="s0">};</span>
+  <span class="s0">selectBtn.addEventListener(</span><span class="s1">&quot;click&quot;</span><span class="s0">, () =&gt; {</span>
+    <span class="s0">const cur = liEl.dataset.ratingStars;</span>
+    <span class="s0">const isSelected = (cur === </span><span class="s1">&quot;3&quot;</span><span class="s0">);</span>
+    <span class="s0">setState(!isSelected);</span>
+  <span class="s0">});</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== Item renderer ============== */</span>
+<span class="s2">function </span><span class="s0">createListItem(item) {</span>
+  <span class="s0">const title      = item.title  || </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+  <span class="s0">const artist     = item.artist || </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+  <span class="s0">const duration   = item.duration || </span><span class="s1">&quot;--&quot;</span><span class="s0">;</span>
+  <span class="s0">const youtubeUrl = item.youtube_url || </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+  <span class="s0">const genreRaw   = item.genre ?? [];</span>
+  <span class="s0">const genreStr   = Array.isArray(genreRaw) ? genreRaw.join(</span><span class="s1">&quot;, &quot;</span><span class="s0">) : String(genreRaw || </span><span class="s1">&quot;&quot;</span><span class="s0">);</span>
+
+  <span class="s0">const li = document.createElement(</span><span class="s1">&quot;li&quot;</span><span class="s0">);</span>
+  <span class="s0">li.dataset.title       = title;</span>
+  <span class="s0">li.dataset.artist      = artist;</span>
+  <span class="s0">li.dataset.duration    = duration;</span>
+  <span class="s0">li.dataset.genre       = genreStr;</span>
+  <span class="s0">li.dataset.youtube     = youtubeUrl || </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+  <span class="s3">// 기본값을 0으로 세팅 → 렌더 직후 평가완료 취급</span>
+  <span class="s0">li.dataset.ratingStars = </span><span class="s1">&quot;0&quot;</span><span class="s0">;</span>
+  <span class="s0">li.dataset.ratingScore = </span><span class="s1">&quot;0&quot;</span><span class="s0">;</span>
+
+  <span class="s0">const yt = youtubeUrl</span>
+    <span class="s0">? `&lt;a href=</span><span class="s1">&quot;${youtubeUrl}&quot; </span><span class="s0">target=</span><span class="s1">&quot;_blank&quot; </span><span class="s0">title=</span><span class="s1">&quot;유튜브로 듣기&quot; </span><span class="s0">style=</span><span class="s1">&quot;text-decoration:none;&quot;</span><span class="s0">&gt;</span>
+         <span class="s0">&lt;img src=</span><span class="s1">&quot;https://upload.wikimedia.org/wikipedia/commons/7/75/YouTube_social_white_squircle_%282017%29.svg&quot;</span>
+              <span class="s0">alt=</span><span class="s1">&quot;YouTube&quot; </span><span class="s0">width=</span><span class="s1">&quot;24&quot; </span><span class="s0">height=</span><span class="s1">&quot;24&quot; </span><span class="s0">style=</span><span class="s1">&quot;vertical-align:middle;&quot;</span><span class="s0">&gt;</span>
+       <span class="s0">&lt;/a&gt;`</span>
+    <span class="s0">: </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+
+  <span class="s0">li.innerHTML = `</span>
+  <span class="s0">&lt;div class=</span><span class="s1">&quot;item-row&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;div class=</span><span class="s1">&quot;item-meta&quot;</span><span class="s0">&gt;</span>
+      <span class="s0">&lt;div class=</span><span class="s1">&quot;item-title&quot;</span><span class="s0">&gt;&lt;strong&gt;${title}&lt;/strong&gt; | ${artist}&lt;/div&gt;</span>
+      <span class="s0">&lt;div class=</span><span class="s1">&quot;item-sub&quot; </span><span class="s0">style=</span><span class="s1">&quot;margin-top:4px; display:flex; align-items:center; gap:8px;&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;span&gt;재생시간: ${duration}&lt;/span&gt;</span>
+        <span class="s0">${yt}</span>
+      <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;div class=</span><span class="s1">&quot;item-actions&quot;</span><span class="s0">&gt;</span>
+      <span class="s0">&lt;button type=</span><span class="s1">&quot;button&quot; </span><span class="s0">class=</span><span class="s1">&quot;select-btn&quot;</span><span class="s0">&gt;선택&lt;/button&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+  <span class="s0">&lt;/div&gt;</span>
+  <span class="s0">`;</span>
+
+  <span class="s0">const selectBtn = li.querySelector(</span><span class="s1">&quot;.select-btn&quot;</span><span class="s0">);</span>
+  <span class="s0">attachSelectEvents(selectBtn, li);</span>
+  <span class="s2">return </span><span class="s0">li;</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== Submit gating(기존 유지) ============== */</span>
+<span class="s2">function </span><span class="s0">allRated(listId) {</span>
+  <span class="s0">const ul = document.getElementById(listId);</span>
+  <span class="s2">if </span><span class="s0">(!ul) </span><span class="s2">return </span><span class="s0">{ ok:</span><span class="s2">false</span><span class="s0">, rated:</span><span class="s4">0</span><span class="s0">, total:</span><span class="s4">0</span><span class="s0">, first:</span><span class="s2">null </span><span class="s0">};</span>
+  <span class="s0">const lis = Array.from(ul.querySelectorAll(</span><span class="s1">&quot;li&quot;</span><span class="s0">));</span>
+  <span class="s0">const ratedLis = lis.filter(li =&gt; li.dataset.ratingStars !== </span><span class="s1">&quot;&quot;</span><span class="s0">);</span>
+  <span class="s0">const firstUnrated = lis.find(li =&gt; li.dataset.ratingStars === </span><span class="s1">&quot;&quot;</span><span class="s0">) || </span><span class="s2">null</span><span class="s0">;</span>
+  <span class="s2">return </span><span class="s0">{ ok: ratedLis.length === lis.length, rated: ratedLis.length, total: lis.length, first: firstUnrated };</span>
+<span class="s0">}</span>
+<span class="s2">function </span><span class="s0">updateSubmitState(listId, submitBtn, progressEl) {</span>
+  <span class="s0">const st = allRated(listId);</span>
+  <span class="s2">if </span><span class="s0">(submitBtn &amp;&amp; submitBtn.classList) {</span>
+    <span class="s0">UI.setSubmitEnabled(submitBtn, st.ok);</span>
+  <span class="s0">}</span>
+<span class="s0">}</span>
+<span class="s2">function </span><span class="s0">collectThreeStarItems(listId) {</span>
+  <span class="s0">const ul = document.getElementById(listId);</span>
+  <span class="s2">if </span><span class="s0">(!ul) </span><span class="s2">return </span><span class="s0">[];</span>
+  <span class="s0">const rows = [];</span>
+  <span class="s0">ul.querySelectorAll(</span><span class="s1">&quot;li&quot;</span><span class="s0">).forEach(li=&gt;{</span>
+    <span class="s0">const isThree = (li.dataset.ratingScore === </span><span class="s1">&quot;3&quot;</span><span class="s0">) || (li.dataset.ratingStars === </span><span class="s1">&quot;3&quot;</span><span class="s0">);</span>
+    <span class="s2">if </span><span class="s0">(isThree) {</span>
+      <span class="s0">rows.push({</span>
+        <span class="s0">title:    li.dataset.title  || </span><span class="s1">&quot;&quot;</span><span class="s0">,</span>
+        <span class="s0">artist:   li.dataset.artist || </span><span class="s1">&quot;&quot;</span><span class="s0">,</span>
+        <span class="s0">duration: li.dataset.duration || </span><span class="s1">&quot;&quot;</span>
+      <span class="s0">});</span>
+    <span class="s0">}</span>
+  <span class="s0">});</span>
+  <span class="s2">return </span><span class="s0">rows;</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== [ADD] 통합 제출용 유틸 ============== */</span>
+<span class="s2">function </span><span class="s0">collectSelectedItems(listId) {</span>
+  <span class="s0">const ul = document.getElementById(listId);</span>
+  <span class="s2">if </span><span class="s0">(!ul) </span><span class="s2">return </span><span class="s0">[];</span>
+  <span class="s0">const rows = [];</span>
+  <span class="s0">ul.querySelectorAll(</span><span class="s1">&quot;li&quot;</span><span class="s0">).forEach(li=&gt;{</span>
+    <span class="s0">const isThree = (li.dataset.ratingScore === </span><span class="s1">&quot;3&quot;</span><span class="s0">) || (li.dataset.ratingStars === </span><span class="s1">&quot;3&quot;</span><span class="s0">);</span>
+    <span class="s2">if </span><span class="s0">(isThree) {</span>
+      <span class="s0">rows.push({</span>
+        <span class="s0">title:       li.dataset.title  || </span><span class="s1">&quot;&quot;</span><span class="s0">,</span>
+        <span class="s0">artist:      li.dataset.artist || </span><span class="s1">&quot;&quot;</span><span class="s0">,</span>
+        <span class="s0">genre:       li.dataset.genre  || </span><span class="s1">&quot;&quot;</span><span class="s0">,</span>
+        <span class="s0">youtube_url: li.dataset.youtube || </span><span class="s1">&quot;&quot;</span>
+      <span class="s0">});</span>
+    <span class="s0">}</span>
+  <span class="s0">});</span>
+  <span class="s2">return </span><span class="s0">rows;</span>
+<span class="s0">}</span>
+<span class="s2">function </span><span class="s0">countItems(listId) {</span>
+  <span class="s0">const ul = document.getElementById(listId);</span>
+  <span class="s2">return </span><span class="s0">ul ? ul.querySelectorAll(</span><span class="s1">&quot;li&quot;</span><span class="s0">).length : </span><span class="s4">0</span><span class="s0">;</span>
+<span class="s0">}</span>
+<span class="s0">async </span><span class="s2">function </span><span class="s0">sendSubmitCombined(payload) {</span>
+  <span class="s0">const res = await fetch(ENDPOINTS.submit, {</span>
+    <span class="s0">method: </span><span class="s1">&quot;POST&quot;</span><span class="s0">,</span>
+    <span class="s0">headers: {</span><span class="s1">&quot;Content-Type&quot;</span><span class="s0">:</span><span class="s1">&quot;application/json&quot;</span><span class="s0">},</span>
+    <span class="s0">body: JSON.stringify(payload)</span>
+  <span class="s0">});</span>
+  <span class="s2">return </span><span class="s0">res.json();</span>
+<span class="s0">}</span>
+
+<span class="s0">async </span><span class="s2">function </span><span class="s0">sendOverallToServerSingle({ user, section, score }) {</span>
+  <span class="s0">const res = await fetch(ENDPOINTS.overall, {</span>
+    <span class="s0">method: </span><span class="s1">&quot;POST&quot;</span><span class="s0">,</span>
+    <span class="s0">headers: {</span><span class="s1">&quot;Content-Type&quot;</span><span class="s0">:</span><span class="s1">&quot;application/json&quot;</span><span class="s0">},</span>
+    <span class="s0">body: JSON.stringify({ user, section, score })</span>
+  <span class="s0">});</span>
+  <span class="s2">return </span><span class="s0">res.json();</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== Year buttons (multi-select, no auto-fetch) ============== */</span>
+<span class="s0">const YearBar = {</span>
+  <span class="s0">selectedTokensByBox: Object.create(</span><span class="s2">null</span><span class="s0">),</span>
+
+  <span class="s0">parseRange(str) {</span>
+    <span class="s2">if </span><span class="s0">(!str) </span><span class="s2">return null</span><span class="s0">;</span>
+    <span class="s0">const m = str.match(/^(\d{</span><span class="s4">4</span><span class="s0">})(?:-(\d{</span><span class="s4">4</span><span class="s0">})?)?$/); </span><span class="s3">// &quot;2021-&quot; 허용</span>
+    <span class="s2">if </span><span class="s0">(!m) </span><span class="s2">return null</span><span class="s0">;</span>
+    <span class="s0">const a = parseInt(m[</span><span class="s4">1</span><span class="s0">], </span><span class="s4">10</span><span class="s0">);</span>
+    <span class="s0">const b = m[</span><span class="s4">2</span><span class="s0">] ? parseInt(m[</span><span class="s4">2</span><span class="s0">], </span><span class="s4">10</span><span class="s0">) : </span><span class="s4">2025</span><span class="s0">;</span>
+    <span class="s2">if </span><span class="s0">(Number.isNaN(a) || Number.isNaN(b)) </span><span class="s2">return null</span><span class="s0">;</span>
+    <span class="s2">return </span><span class="s0">[a, b];</span>
+  <span class="s0">},</span>
+
+  <span class="s0">getRanges(scopeKey) {</span>
+    <span class="s0">const tokens = </span><span class="s2">this</span><span class="s0">.selectedTokensByBox[scopeKey] || </span><span class="s2">new </span><span class="s0">Set();</span>
+    <span class="s0">const out = [];</span>
+    <span class="s0">tokens.forEach(tok =&gt; {</span>
+      <span class="s0">const r = </span><span class="s2">this</span><span class="s0">.parseRange(tok);</span>
+      <span class="s2">if </span><span class="s0">(r) out.push(r);</span>
+    <span class="s0">});</span>
+    <span class="s2">return </span><span class="s0">out; </span><span class="s3">// Array&lt;[start,end]&gt;</span>
+  <span class="s0">},</span>
+
+  <span class="s0">bind(containerId, scopeKey) {</span>
+    <span class="s0">const wrap = document.getElementById(containerId);</span>
+    <span class="s2">if </span><span class="s0">(!wrap) </span><span class="s2">return</span><span class="s0">;</span>
+    <span class="s2">if </span><span class="s0">(!</span><span class="s2">this</span><span class="s0">.selectedTokensByBox[scopeKey]) </span><span class="s2">this</span><span class="s0">.selectedTokensByBox[scopeKey] = </span><span class="s2">new </span><span class="s0">Set();</span>
+
+    <span class="s0">wrap.addEventListener(</span><span class="s1">&quot;click&quot;</span><span class="s0">, (e) =&gt; {</span>
+      <span class="s0">const btn = e.target.closest(</span><span class="s1">&quot;button[data-range]&quot;</span><span class="s0">);</span>
+      <span class="s2">if </span><span class="s0">(!btn) </span><span class="s2">return</span><span class="s0">;</span>
+
+      <span class="s0">const tok = String(btn.dataset.range || </span><span class="s1">&quot;&quot;</span><span class="s0">);</span>
+      <span class="s0">const set = YearBar.selectedTokensByBox[scopeKey];</span>
+
+      <span class="s2">if </span><span class="s0">(btn.classList.contains(</span><span class="s1">&quot;selected&quot;</span><span class="s0">)) {</span>
+        <span class="s0">btn.classList.remove(</span><span class="s1">&quot;selected&quot;</span><span class="s0">);</span>
+        <span class="s0">set.</span><span class="s2">delete</span><span class="s0">(tok);</span>
+      <span class="s0">} </span><span class="s2">else </span><span class="s0">{</span>
+        <span class="s0">btn.classList.add(</span><span class="s1">&quot;selected&quot;</span><span class="s0">);</span>
+        <span class="s0">set.add(tok);</span>
+      <span class="s0">}</span>
+      <span class="s3">// 호출은 버튼(모든 추천 받기)에서만</span>
+    <span class="s0">});</span>
+  <span class="s0">}</span>
+<span class="s0">};</span>
+
+<span class="s3">/* ============== 보조: 섹션 오버롤 점수 가져오기 ============== */</span>
+<span class="s2">function </span><span class="s0">getOverallScore(section) {</span>
+  <span class="s0">const group = document.querySelector(`.rating-buttons[data-type=</span><span class="s1">&quot;${section}&quot;</span><span class="s0">]`);</span>
+  <span class="s0">const sel = group?.querySelector(</span><span class="s1">&quot;button.selected&quot;</span><span class="s0">);</span>
+  <span class="s2">return </span><span class="s0">sel ? parseInt(sel.dataset.score, </span><span class="s4">10</span><span class="s0">) : -</span><span class="s4">1</span><span class="s0">;</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== 미평가 0으로 정규화 ============== */</span>
+<span class="s2">function </span><span class="s0">normalizeUnrated(listId) {</span>
+  <span class="s0">const ul = document.getElementById(listId);</span>
+  <span class="s2">if </span><span class="s0">(!ul) </span><span class="s2">return</span><span class="s0">;</span>
+  <span class="s0">ul.querySelectorAll(</span><span class="s1">&quot;li&quot;</span><span class="s0">).forEach(li =&gt; {</span>
+    <span class="s2">if </span><span class="s0">(li.dataset.ratingStars === </span><span class="s1">&quot;&quot; </span><span class="s0">|| li.dataset.ratingScore === </span><span class="s1">&quot;&quot;</span><span class="s0">) {</span>
+      <span class="s0">li.dataset.ratingStars = </span><span class="s1">&quot;0&quot;</span><span class="s0">;</span>
+      <span class="s0">li.dataset.ratingScore = </span><span class="s1">&quot;0&quot;</span><span class="s0">;</span>
+      <span class="s0">li.dispatchEvent(</span><span class="s2">new </span><span class="s0">CustomEvent(</span><span class="s1">'ratingchange'</span><span class="s0">, { bubbles: </span><span class="s2">true </span><span class="s0">}));</span>
+    <span class="s0">}</span>
+  <span class="s0">});</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== fetch/merge helpers (단일 호출) ============== */</span>
+<span class="s0">async </span><span class="s2">function </span><span class="s0">fetchAndRender(url, listId, boxType) {</span>
+  <span class="s0">const ul = document.getElementById(listId);</span>
+  <span class="s0">const box = ul.closest(</span><span class="s1">&quot;.recommend-box&quot;</span><span class="s0">);</span>
+
+  <span class="s3">// submit-button은 지우지 않는다(재사용)</span>
+  <span class="s0">box.querySelectorAll(</span><span class="s1">&quot;.overall-rating, .rating-progress&quot;</span><span class="s0">).forEach(n =&gt; n.remove());</span>
+  <span class="s0">ul.innerHTML = `&lt;li&gt;불러오는 중…&lt;/li&gt;`;</span>
+
+  <span class="s2">try </span><span class="s0">{</span>
+    <span class="s0">const r = await fetch(url);</span>
+    <span class="s0">const data = await r.json();</span>
+    <span class="s0">const recommendations = Array.isArray(data?.recommendations) ? data.recommendations : [];</span>
+
+    <span class="s2">if </span><span class="s0">(!recommendations.length) {</span>
+      <span class="s0">ul.innerHTML = `&lt;li&gt;추천 결과가 없습니다.&lt;/li&gt;`;</span>
+      <span class="s2">if </span><span class="s0">(boxType === </span><span class="s1">&quot;theme&quot;</span><span class="s0">) {</span>
+        <span class="s3">// 테마 박스에 버튼이 없으면 만들어 두기(비활성)</span>
+        <span class="s0">let submitBtn = box.querySelector(</span><span class="s1">&quot;.submit-button&quot;</span><span class="s0">);</span>
+        <span class="s2">if </span><span class="s0">(!submitBtn) {</span>
+          <span class="s0">submitBtn = UI.createSubmitButton(</span><span class="s1">&quot;전체 제출&quot;</span><span class="s0">);</span>
+          <span class="s0">box.appendChild(submitBtn);</span>
+        <span class="s0">}</span>
+      <span class="s0">}</span>
+      <span class="s2">return</span><span class="s0">;</span>
+    <span class="s0">}</span>
+
+    <span class="s0">ul.innerHTML = </span><span class="s1">&quot;&quot;</span><span class="s0">;</span>
+    <span class="s0">recommendations.forEach(it =&gt; ul.appendChild(createListItem(it)));</span>
+
+    <span class="s0">const ratingPanel = UI.createOverallRating(boxType);</span>
+    <span class="s0">box.appendChild(ratingPanel);</span>
+
+    <span class="s0">const progress = UI.createProgress();</span>
+    <span class="s0">box.appendChild(progress);</span>
+
+    <span class="s2">if </span><span class="s0">(boxType === </span><span class="s1">&quot;theme&quot;</span><span class="s0">) {</span>
+      <span class="s3">// 버튼 재사용(없으면 생성)</span>
+      <span class="s0">let submitBtn = box.querySelector(</span><span class="s1">&quot;.submit-button&quot;</span><span class="s0">);</span>
+      <span class="s2">if </span><span class="s0">(!submitBtn) {</span>
+        <span class="s0">submitBtn = UI.createSubmitButton(</span><span class="s1">&quot;전체 제출&quot;</span><span class="s0">);</span>
+        <span class="s0">box.appendChild(submitBtn);</span>
+      <span class="s0">}</span>
+      <span class="s3">// 중복 바인딩 방지</span>
+      <span class="s0">submitBtn.onclick = async () =&gt; {</span>
+        <span class="s3">// 안전망: 모든 리스트 미평가 0으로 정규화</span>
+        <span class="s0">normalizeUnrated(</span><span class="s1">&quot;cf-results&quot;</span><span class="s0">);</span>
+        <span class="s0">normalizeUnrated(</span><span class="s1">&quot;collab-results&quot;</span><span class="s0">);</span>
+        <span class="s0">normalizeUnrated(</span><span class="s1">&quot;hybrid-results&quot;</span><span class="s0">);</span>
+        <span class="s0">normalizeUnrated(</span><span class="s1">&quot;theme-result-list&quot;</span><span class="s0">);</span>
+
+        <span class="s3">// 네 섹션이 모두 로드/평가되었는지 확인</span>
+        <span class="s0">const lists = [</span>
+          <span class="s0">{ id: </span><span class="s1">&quot;cf-results&quot;</span><span class="s0">,        key: </span><span class="s1">&quot;content&quot;</span><span class="s0">, label: </span><span class="s1">&quot;콘텐츠&quot; </span><span class="s0">},</span>
+          <span class="s0">{ id: </span><span class="s1">&quot;collab-results&quot;</span><span class="s0">,    key: </span><span class="s1">&quot;collabo&quot;</span><span class="s0">, label: </span><span class="s1">&quot;협업&quot;   </span><span class="s0">},</span>
+          <span class="s0">{ id: </span><span class="s1">&quot;hybrid-results&quot;</span><span class="s0">,    key: </span><span class="s1">&quot;hybrid&quot;</span><span class="s0">,  label: </span><span class="s1">&quot;하이브리드&quot; </span><span class="s0">},</span>
+          <span class="s0">{ id: </span><span class="s1">&quot;theme-result-list&quot;</span><span class="s0">, key: </span><span class="s1">&quot;theme&quot;</span><span class="s0">,   label: </span><span class="s1">&quot;테마&quot;   </span><span class="s0">},</span>
+        <span class="s0">];</span>
+        <span class="s2">for </span><span class="s0">(const L of lists) {</span>
+          <span class="s2">if </span><span class="s0">(countItems(L.id) === </span><span class="s4">0</span><span class="s0">) {</span>
+            <span class="s0">alert(`[${L.label}] 추천을 먼저 불러오세요.`);</span>
+            <span class="s2">return</span><span class="s0">;</span>
+          <span class="s0">}</span>
+          <span class="s0">const st = allRated(L.id);</span>
+          <span class="s2">if </span><span class="s0">(!st.ok) {</span>
+            <span class="s0">alert(`[${L.label}] 아직 평가하지 않은 항목이 있습니다. (${st.rated}/${st.total})`);</span>
+            <span class="s2">if </span><span class="s0">(st.first) st.first.scrollIntoView({ behavior:</span><span class="s1">&quot;smooth&quot;</span><span class="s0">, block:</span><span class="s1">&quot;center&quot; </span><span class="s0">});</span>
+            <span class="s2">return</span><span class="s0">;</span>
+          <span class="s0">}</span>
+        <span class="s0">}</span>
+
+        <span class="s2">try </span><span class="s0">{</span>
+          <span class="s0">const user = UI.getUser(</span><span class="s1">&quot;user-name-theme&quot;</span><span class="s0">);</span>
+          <span class="s0">const q    = UI.getQuery();</span>
+          <span class="s0">const sections = {</span>
+            <span class="s0">content: { items: collectSelectedItems(</span><span class="s1">&quot;cf-results&quot;</span><span class="s0">),        total: countItems(</span><span class="s1">&quot;cf-results&quot;</span><span class="s0">) },</span>
+            <span class="s0">collabo: { items: collectSelectedItems(</span><span class="s1">&quot;collab-results&quot;</span><span class="s0">),    total: countItems(</span><span class="s1">&quot;collab-results&quot;</span><span class="s0">) },</span>
+            <span class="s0">hybrid:  { items: collectSelectedItems(</span><span class="s1">&quot;hybrid-results&quot;</span><span class="s0">),    total: countItems(</span><span class="s1">&quot;hybrid-results&quot;</span><span class="s0">) },</span>
+            <span class="s0">theme:   { items: collectSelectedItems(</span><span class="s1">&quot;theme-result-list&quot;</span><span class="s0">), total: countItems(</span><span class="s1">&quot;theme-result-list&quot;</span><span class="s0">), keywords: q }</span>
+          <span class="s0">};</span>
+          <span class="s0">const scores = {</span>
+            <span class="s0">content: getOverallScore(</span><span class="s1">&quot;content&quot;</span><span class="s0">),</span>
+            <span class="s0">collabo: getOverallScore(</span><span class="s1">&quot;collab&quot;</span><span class="s0">),</span>
+            <span class="s0">hybrid:  getOverallScore(</span><span class="s1">&quot;hybrid&quot;</span><span class="s0">),</span>
+            <span class="s0">theme:   getOverallScore(</span><span class="s1">&quot;theme&quot;</span><span class="s0">),</span>
+          <span class="s0">};</span>
+          <span class="s0">const out = await sendSubmitCombined({ user, sections, scores });</span>
+          <span class="s0">alert(out.message || </span><span class="s1">&quot;제출 완료&quot;</span><span class="s0">);</span>
+        <span class="s0">} </span><span class="s2">catch </span><span class="s0">(e) {</span>
+          <span class="s0">console.error(e);</span>
+          <span class="s0">alert(</span><span class="s1">&quot;통합 제출 중 오류가 발생했습니다.&quot;</span><span class="s0">);</span>
+        <span class="s0">}</span>
+      <span class="s0">};</span>
+
+      <span class="s3">// 테마 진행도로 버튼 활성화(실제 검증은 클릭 시 일괄)</span>
+      <span class="s0">normalizeUnrated(</span><span class="s1">&quot;theme-result-list&quot;</span><span class="s0">);</span>
+      <span class="s0">box.addEventListener(</span><span class="s1">&quot;ratingchange&quot;</span><span class="s0">, () =&gt; {</span>
+        <span class="s0">updateSubmitState(listId, box.querySelector(</span><span class="s1">&quot;.submit-button&quot;</span><span class="s0">), progress);</span>
+      <span class="s0">});</span>
+      <span class="s0">updateSubmitState(listId, box.querySelector(</span><span class="s1">&quot;.submit-button&quot;</span><span class="s0">), progress);</span>
+
+    <span class="s0">} </span><span class="s2">else </span><span class="s0">{</span>
+      <span class="s3">// 다른 섹션: 제출 버튼 없음, 진행도만 표시 갱신</span>
+      <span class="s0">box.addEventListener(</span><span class="s1">&quot;ratingchange&quot;</span><span class="s0">, () =&gt; {</span>
+        <span class="s0">updateSubmitState(listId, { disabled: </span><span class="s2">true</span><span class="s0">, classList:{toggle:()=&gt;{}}, title:</span><span class="s1">&quot;&quot; </span><span class="s0">}, progress);</span>
+      <span class="s0">});</span>
+      <span class="s0">updateSubmitState(listId, { disabled: </span><span class="s2">true</span><span class="s0">, classList:{toggle:()=&gt;{}}, title:</span><span class="s1">&quot;&quot; </span><span class="s0">}, progress);</span>
+    <span class="s0">}</span>
+
+  <span class="s0">} </span><span class="s2">catch </span><span class="s0">(e) {</span>
+    <span class="s0">console.error(e);</span>
+    <span class="s0">ul.innerHTML = `&lt;li&gt;오류가 발생했습니다.&lt;/li&gt;`;</span>
+  <span class="s0">}</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== Endpoint builders (단일 URL) ============== */</span>
+<span class="s2">function </span><span class="s0">buildEndpointsPersonal(user, ranges) {</span>
+  <span class="s2">return </span><span class="s0">{</span>
+    <span class="s0">content: ENDPOINTS.content(user, ranges),</span>
+    <span class="s0">collab:  ENDPOINTS.collab(user,  ranges),</span>
+    <span class="s0">hybrid:  ENDPOINTS.hybrid(user,  ranges),</span>
+  <span class="s0">};</span>
+<span class="s0">}</span>
+<span class="s2">function </span><span class="s0">buildEndpointsTheme(user, q, ranges) {</span>
+  <span class="s2">return </span><span class="s0">ENDPOINTS.theme(user, q, ranges);</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== Actions (triggered ONLY by buttons) ============== */</span>
+<span class="s0">async </span><span class="s2">function </span><span class="s0">getAllRecommendations() {</span>
+  <span class="s0">const user = UI.getUser(</span><span class="s1">&quot;user-name&quot;</span><span class="s0">);</span>
+  <span class="s0">const ranges = YearBar.getRanges(</span><span class="s1">&quot;personal&quot;</span><span class="s0">);</span>
+  <span class="s0">const eps = buildEndpointsPersonal(user, ranges);</span>
+  <span class="s0">await Promise.all([</span>
+    <span class="s0">fetchAndRender(eps.content, </span><span class="s1">&quot;cf-results&quot;</span><span class="s0">,    </span><span class="s1">&quot;content&quot;</span><span class="s0">),</span>
+    <span class="s0">fetchAndRender(eps.collab,  </span><span class="s1">&quot;collab-results&quot;</span><span class="s0">,</span><span class="s1">&quot;collab&quot;</span><span class="s0">),</span>
+    <span class="s0">fetchAndRender(eps.hybrid,  </span><span class="s1">&quot;hybrid-results&quot;</span><span class="s0">,</span><span class="s1">&quot;hybrid&quot;</span><span class="s0">),</span>
+  <span class="s0">]);</span>
+<span class="s0">}</span>
+<span class="s0">async </span><span class="s2">function </span><span class="s0">getTheme() {</span>
+  <span class="s0">const user = UI.getUser(</span><span class="s1">&quot;user-name-theme&quot;</span><span class="s0">);</span>
+  <span class="s0">const q = UI.getQuery();</span>
+  <span class="s0">const ranges = YearBar.getRanges(</span><span class="s1">&quot;theme&quot;</span><span class="s0">);</span>
+  <span class="s0">const ep = buildEndpointsTheme(user, q, ranges);</span>
+  <span class="s0">await fetchAndRender(ep, </span><span class="s1">&quot;theme-result-list&quot;</span><span class="s0">, </span><span class="s1">&quot;theme&quot;</span><span class="s0">);</span>
+<span class="s0">}</span>
+
+<span class="s3">/* ============== Bind ============== */</span>
+<span class="s0">document.getElementById(</span><span class="s1">&quot;btn-personal-all&quot;</span><span class="s0">)?.addEventListener(</span><span class="s1">&quot;click&quot;</span><span class="s0">, getAllRecommendations);</span>
+<span class="s0">document.getElementById(</span><span class="s1">&quot;btn-theme-all&quot;</span><span class="s0">)?.addEventListener(</span><span class="s1">&quot;click&quot;</span><span class="s0">, getTheme);</span>
+<span class="s3">// 과거 하단 제출 버튼은 HTML에 없음(동적 버튼만 사용)</span>
+
+<span class="s0">YearBar.bind(</span><span class="s1">&quot;year-bar-personal&quot;</span><span class="s0">, </span><span class="s1">&quot;personal&quot;</span><span class="s0">);</span>
+<span class="s0">YearBar.bind(</span><span class="s1">&quot;year-bar-theme&quot;</span><span class="s0">, </span><span class="s1">&quot;theme&quot;</span><span class="s0">);</span>
+</pre>
+</body>
+</html>

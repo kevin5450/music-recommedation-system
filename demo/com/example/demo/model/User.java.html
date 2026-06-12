@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>User.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+User.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Id</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">data</span><span class="s2">.</span><span class="s1">mongodb</span><span class="s2">.</span><span class="s1">core</span><span class="s2">.</span><span class="s1">mapping</span><span class="s2">.</span><span class="s1">Document</span><span class="s2">;</span>
+
+<span class="s1">@Document</span><span class="s2">(</span><span class="s1">collection </span><span class="s2">= </span><span class="s3">&quot;user&quot;</span><span class="s2">)</span>
+<span class="s0">public class </span><span class="s1">User </span><span class="s2">{</span>
+    <span class="s1">@Id</span>
+    <span class="s0">private </span><span class="s1">String id</span><span class="s2">;</span>
+
+    <span class="s0">private </span><span class="s1">String userid</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String birthdate</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String email</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String password</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String nickname</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String fullname</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">String phone</span><span class="s2">;</span>
+    <span class="s0">private boolean </span><span class="s1">newsletter</span><span class="s2">;</span>
+
+    <span class="s4">// 기본 생성자</span>
+    <span class="s0">public </span><span class="s1">User</span><span class="s2">() {}</span>
+
+    <span class="s4">// 생성자</span>
+    <span class="s0">public </span><span class="s1">User</span><span class="s2">(</span><span class="s1">String userid</span><span class="s2">, </span><span class="s1">String fullname</span><span class="s2">, </span><span class="s1">String email</span><span class="s2">, </span><span class="s1">String password</span><span class="s2">, </span><span class="s1">String nickname</span><span class="s2">, </span><span class="s1">String birthdate</span><span class="s2">, </span><span class="s1">String phone</span><span class="s2">, </span><span class="s0">boolean </span><span class="s1">newsletter</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">userid </span><span class="s2">= </span><span class="s1">userid</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">fullname </span><span class="s2">= </span><span class="s1">fullname</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">email </span><span class="s2">= </span><span class="s1">email</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">password </span><span class="s2">= </span><span class="s1">password</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">nickname </span><span class="s2">= </span><span class="s1">nickname</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">birthdate </span><span class="s2">= </span><span class="s1">birthdate</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">phone </span><span class="s2">= </span><span class="s1">phone</span><span class="s2">;</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">newsletter </span><span class="s2">= </span><span class="s1">newsletter</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s4">// Getter 및 Setter</span>
+    <span class="s0">public </span><span class="s1">String getId</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">id</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setId</span><span class="s2">(</span><span class="s1">String id</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">id </span><span class="s2">= </span><span class="s1">id</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getUserid</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">userid</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setUserid</span><span class="s2">(</span><span class="s1">String userid</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">userid </span><span class="s2">= </span><span class="s1">userid</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getNickname</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">nickname</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setNickname</span><span class="s2">(</span><span class="s1">String nickname</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">nickname </span><span class="s2">= </span><span class="s1">nickname</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getEmail</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">email</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setEmail</span><span class="s2">(</span><span class="s1">String email</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">email </span><span class="s2">= </span><span class="s1">email</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getPassword</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">password</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setPassword</span><span class="s2">(</span><span class="s1">String password</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">password </span><span class="s2">= </span><span class="s1">password</span><span class="s2">; }</span>
+
+    <span class="s0">public boolean </span><span class="s1">isNewsletter</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">newsletter</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setNewsletter</span><span class="s2">(</span><span class="s0">boolean </span><span class="s1">newsletter</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">newsletter </span><span class="s2">= </span><span class="s1">newsletter</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getFullname</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">fullname</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setFullname</span><span class="s2">(</span><span class="s1">String fullname</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">fullname </span><span class="s2">= </span><span class="s1">fullname</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getBirthdate</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">birthdate</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setBirthdate</span><span class="s2">(</span><span class="s1">String birthdate</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">birthdate </span><span class="s2">= </span><span class="s1">birthdate</span><span class="s2">; }</span>
+
+    <span class="s0">public </span><span class="s1">String getPhone</span><span class="s2">() { </span><span class="s0">return </span><span class="s1">phone</span><span class="s2">; }</span>
+    <span class="s0">public void </span><span class="s1">setPhone</span><span class="s2">(</span><span class="s1">String phone</span><span class="s2">) { </span><span class="s0">this</span><span class="s2">.</span><span class="s1">phone </span><span class="s2">= </span><span class="s1">phone</span><span class="s2">; }</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

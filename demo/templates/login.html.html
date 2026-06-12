@@ -1,0 +1,73 @@
+<html>
+<head>
+<title>login.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bababa;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+login.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!DOCTYPE </span><span class="s2">HTML</span><span class="s0">&gt;</span>
+<span class="s0">&lt;html </span><span class="s2">lang</span><span class="s3">=&quot;ko&quot; </span><span class="s2">xmlns:th</span><span class="s3">=&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;head&gt;</span>
+  <span class="s0">&lt;title&gt;</span><span class="s1">Login</span><span class="s0">&lt;/title&gt;</span>
+  <span class="s0">&lt;meta </span><span class="s2">http-equiv</span><span class="s3">=&quot;Content-Type&quot; </span><span class="s2">content</span><span class="s3">=&quot;text/html; charset=UTF-8&quot; </span><span class="s0">/&gt;</span>
+<span class="s0">&lt;/head&gt;</span>
+<span class="s0">&lt;body&gt;</span>
+
+<span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;/Mainpage&quot;</span><span class="s0">&gt;</span><span class="s1">Go to Main Page</span><span class="s0">&lt;/a&gt;</span>
+
+<span class="s0">&lt;div&gt;&lt;h1&gt;</span><span class="s1">LOGIN</span><span class="s0">&lt;/h1&gt;&lt;/div&gt;</span>
+
+<span class="s4">&lt;!-- 오류 메시지 표시 --&gt;</span>
+<span class="s0">&lt;div </span><span class="s2">th:if</span><span class="s3">=&quot;${error}&quot; </span><span class="s2">style</span><span class="s3">=&quot;color: red;&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;p </span><span class="s2">th:text</span><span class="s3">=&quot;${error}&quot;</span><span class="s0">&gt;&lt;/p&gt;</span>
+<span class="s0">&lt;/div&gt;</span>
+
+<span class="s0">&lt;form </span><span class="s2">action</span><span class="s3">=&quot;/login&quot; </span><span class="s2">method</span><span class="s3">=&quot;POST&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;loginbox&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;userid&quot;</span><span class="s0">&gt;&lt;h5 </span><span class="s2">class</span><span class="s3">=&quot;loginlabel&quot;</span><span class="s0">&gt;</span><span class="s1">아이디 *</span><span class="s0">&lt;/h5&gt;&lt;/label&gt;</span>
+    <span class="s0">&lt;input </span><span class="s2">class</span><span class="s3">=&quot;input1&quot; </span><span class="s2">id</span><span class="s3">=&quot;userid&quot; </span><span class="s2">name</span><span class="s3">=&quot;userid&quot; </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">size</span><span class="s3">=&quot;40&quot; </span><span class="s2">maxlength</span><span class="s3">=&quot;10&quot; </span><span class="s2">placeholder</span><span class="s3">=&quot;   아이디&quot; </span><span class="s2">th:value</span><span class="s3">=&quot;${userid}&quot; </span><span class="s2">required</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;/div&gt;</span>
+  <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;loginbox&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;password&quot;</span><span class="s0">&gt;&lt;h5 </span><span class="s2">class</span><span class="s3">=&quot;loginlabel&quot;</span><span class="s0">&gt;</span><span class="s1">비밀번호 *</span><span class="s0">&lt;/h5&gt;&lt;/label&gt;</span>
+    <span class="s0">&lt;input </span><span class="s2">class</span><span class="s3">=&quot;input1&quot; </span><span class="s2">id</span><span class="s3">=&quot;password&quot; </span><span class="s2">name</span><span class="s3">=&quot;password&quot; </span><span class="s2">type</span><span class="s3">=&quot;password&quot; </span><span class="s2">size</span><span class="s3">=&quot;40&quot; </span><span class="s2">maxlength</span><span class="s3">=&quot;10&quot; </span><span class="s2">placeholder</span><span class="s3">=&quot;   비밀번호&quot; </span><span class="s2">required</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;/div&gt;</span>
+
+  <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;signmein&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;checkbox&quot; </span><span class="s2">name</span><span class="s3">=&quot;rememberme&quot; </span><span class="s2">value</span><span class="s3">=&quot;1&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;span </span><span class="s2">class</span><span class="s3">=&quot;signmein1&quot;</span><span class="s0">&gt;</span><span class="s1">Keep me signed in</span><span class="s0">&lt;/span&gt;</span>
+  <span class="s0">&lt;/div&gt;</span>
+  <span class="s0">&lt;div&gt;</span>
+    <span class="s0">&lt;input </span><span class="s2">class</span><span class="s3">=&quot;loginbutton1&quot; </span><span class="s2">type</span><span class="s3">=&quot;submit&quot; </span><span class="s2">value</span><span class="s3">=&quot;LOGIN&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;/div&gt;</span>
+<span class="s0">&lt;/form&gt;</span>
+
+<span class="s4">&lt;!-- 회원가입 버튼 --&gt;</span>
+<span class="s0">&lt;form </span><span class="s2">action</span><span class="s3">=&quot;/register&quot; </span><span class="s2">method</span><span class="s3">=&quot;GET&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;loginbutton&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;div&gt;</span>
+      <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;loginbutton2&quot; </span><span class="s2">type</span><span class="s3">=&quot;submit&quot;</span><span class="s0">&gt;</span><span class="s1">REGISTER</span><span class="s0">&lt;/button&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+  <span class="s0">&lt;/div&gt;</span>
+<span class="s0">&lt;/form&gt;</span>
+
+<span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;forgot&quot;</span><span class="s0">&gt;</span>
+  <span class="s0">&lt;h3&gt;</span><span class="s1">Forgot ID?</span><span class="s0">&lt;/h3&gt;</span>
+  <span class="s0">&lt;h3&gt;</span><span class="s1">Forgot Password?</span><span class="s0">&lt;/h3&gt;</span>
+<span class="s0">&lt;/div&gt;</span>
+
+<span class="s0">&lt;/body&gt;</span>
+<span class="s0">&lt;/html&gt;</span>
+</pre>
+</body>
+</html>

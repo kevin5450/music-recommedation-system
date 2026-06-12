@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/mainpage.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <form action="/search" method="get" class="navbar-search">
+      <input type="text" name="query" placeholder="Search songs or artists" id="search-input">
+      <button type="submit" class="search-btn">Search</button>
+    </form>
+    <div class="navbar-links">
+      <a href="/recommendationpage">Discover</a>
+      <a href="/Mypage">My Page</a>
+      <a href="/Settings">Settings</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <section class="hero">
+      <h1 class="hero-title">Your Music, <br>Discovered.</h1>
+      <p class="hero-subtitle">Find songs, save your favorites, and explore what's new.</p>
+    </section>
+
+    <section class="search-results" th:if="${songs or error}">
+      <div class="error-banner" th:if="${error}">
+        <p th:text="${error}"></p>
+      </div>
+      <div th:if="${songs}">
+        <h2 class="section-title">Search Results</h2>
+        <ul class="song-list">
+          <li class="song-item" th:each="song : ${songs}">
+            <div class="song-info">
+              <span class="song-title" th:text="${song.title}"></span>
+              <span class="song-artist" th:text="${song.artist}"></span>
+            </div>
+            <div class="song-actions">
+              <form action="/save" method="post" class="inline-form">
+                <input type="hidden" name="title" th:value="${song.title}">
+                <input type="hidden" name="artist" th:value="${song.artist}">
+                <button type="submit" class="btn-secondary">Save Song</button>
+              </form>
+              <form action="/save-artist" method="post" class="inline-form">
+                <input type="hidden" name="artist" th:value="${song.artist}">
+                <button type="submit" class="btn-secondary">Save Artist</button>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="liked-artists" th:if="${artists}">
+      <h2 class="section-title">Your Favorite Artists</h2>
+      <ul class="artist-list">
+        <li class="artist-chip" th:each="artist : ${artists}">
+          <span th:text="${artist.artist}"></span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="quick-links">
+      <h2 class="section-title">Explore</h2>
+      <div class="quick-links-grid">
+        <a href="/recommendationpage" class="quick-card">
+          <h3>Discover</h3>
+          <p>Personalized recommendations just for you</p>
+        </a>
+        <a href="https://charts.spotify.com/charts/overview/global" class="quick-card" target="_blank">
+          <h3>Charts</h3>
+          <p>See what the world is listening to</p>
+        </a>
+        <a href="/Mypage" class="quick-card">
+          <h3>My Page</h3>
+          <p>Your saved songs and artists</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="add-song">
+      <h2 class="section-title">Add a Song</h2>
+      <form action="/Mainpage" method="post" class="add-song-form">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input id="title" name="title" type="text" placeholder="Song title" required>
+        </div>
+        <div class="form-group">
+          <label for="artist">Artist</label>
+          <input id="artist" name="artist" type="text" placeholder="Artist name" required>
+        </div>
+        <button type="submit" class="btn-primary">Add Song</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Fluffy Music. All rights reserved.</p>
+  </footer>
+
+  <script th:src="@{/js/mainpage.js}" defer></script>
+</body>
+</html>

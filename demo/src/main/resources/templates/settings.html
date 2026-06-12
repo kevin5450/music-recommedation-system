@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/settings.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <div class="navbar-links">
+      <a href="/Mainpage">Home</a>
+      <a href="/Mypage">My Page</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <section class="page-header">
+      <h1 class="page-title">Settings</h1>
+    </section>
+
+    <section class="settings-list">
+      <a href="/settings-account" class="settings-row">
+        <div class="settings-row-info">
+          <h2 class="settings-row-title">Account</h2>
+          <p class="settings-row-desc">Manage your profile and password</p>
+        </div>
+        <span class="settings-row-arrow">›</span>
+      </a>
+      <a href="/settings-etc" class="settings-row">
+        <div class="settings-row-info">
+          <h2 class="settings-row-title">General</h2>
+          <p class="settings-row-desc">Notifications, privacy, and more</p>
+        </div>
+        <span class="settings-row-arrow">›</span>
+      </a>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Fluffy Music. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

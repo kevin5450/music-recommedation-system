@@ -1,0 +1,65 @@
+<html>
+<head>
+<title>MyPageController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MyPageController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">LikedArtist</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">LikedArtistRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">MyPlaylistRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">MyPlaylist</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Controller</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">Model</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">GetMapping</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s1">@Controller</span>
+<span class="s0">public class </span><span class="s1">MyPageController </span><span class="s2">{</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">MyPlaylistRepository playlistRepository</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">LikedArtistRepository likedArtistRepository</span><span class="s2">;</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String showloginPage</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s3">&quot;login&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/Mypage&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String MyPage</span><span class="s2">(</span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s3">&quot;Mypage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/mypage-myplaylist&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String showPlaylist</span><span class="s2">(</span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">MyPlaylist</span><span class="s2">&gt; </span><span class="s1">playlist </span><span class="s2">= </span><span class="s1">playlistRepository</span><span class="s2">.</span><span class="s1">findAll</span><span class="s2">();</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s3">&quot;playlist&quot;</span><span class="s2">, </span><span class="s1">playlist</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s3">&quot;mypage-myplaylist&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/mypage-likedartist&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String MyPageLikedArtist</span><span class="s2">(</span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">LikedArtist</span><span class="s2">&gt; </span><span class="s1">artists </span><span class="s2">= </span><span class="s1">likedArtistRepository</span><span class="s2">.</span><span class="s1">findAll</span><span class="s2">();</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s3">&quot;artists&quot;</span><span class="s2">, </span><span class="s1">artists</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s3">&quot;mypage-likedartist&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

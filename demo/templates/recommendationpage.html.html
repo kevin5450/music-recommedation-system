@@ -1,0 +1,94 @@
+<html>
+<head>
+<title>recommendationpage.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bababa;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+recommendationpage.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!DOCTYPE </span><span class="s2">html</span><span class="s0">&gt;</span>
+<span class="s0">&lt;html </span><span class="s2">lang</span><span class="s3">=&quot;ko&quot; </span><span class="s2">xmlns:th</span><span class="s3">=&quot;http://www.thymeleaf.org&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;head&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">charset</span><span class="s3">=&quot;UTF-8&quot; </span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;title&gt;</span><span class="s1">Music Recommendation Page</span><span class="s0">&lt;/title&gt;</span>
+    <span class="s0">&lt;link </span><span class="s2">rel</span><span class="s3">=&quot;stylesheet&quot; </span><span class="s2">th:href</span><span class="s3">=&quot;@{/recommendation.css}&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;/head&gt;</span>
+<span class="s0">&lt;body&gt;</span>
+<span class="s0">&lt;header&gt;</span>
+    <span class="s0">&lt;h1 </span><span class="s2">style</span><span class="s3">=&quot;text-align:center&quot;</span><span class="s0">&gt;</span><span class="s1">Music Recommendation Page</span><span class="s0">&lt;/h1&gt;</span>
+    <span class="s0">&lt;nav&gt;</span>
+        <span class="s0">&lt;button </span><span class="s2">onclick</span><span class="s3">=&quot;UI.showSection('personal')&quot;</span><span class="s0">&gt;</span><span class="s1">Personal Page</span><span class="s0">&lt;/button&gt;</span>
+        <span class="s0">&lt;button </span><span class="s2">onclick</span><span class="s3">=&quot;UI.showSection('theme')&quot;</span><span class="s0">&gt;</span><span class="s1">Theme</span><span class="s0">&lt;/button&gt;</span>
+    <span class="s0">&lt;/nav&gt;</span>
+<span class="s0">&lt;/header&gt;</span>
+
+<span class="s0">&lt;main&gt;</span>
+    <span class="s4">&lt;!-- Personal --&gt;</span>
+    <span class="s0">&lt;section </span><span class="s2">id</span><span class="s3">=&quot;personal&quot; </span><span class="s2">class</span><span class="s3">=&quot;content-section active&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;toolbar&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">id</span><span class="s3">=&quot;user-name&quot; </span><span class="s2">placeholder</span><span class="s3">=&quot;사용자 이름 입력 (예: 봉지훈)&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">id</span><span class="s3">=&quot;btn-personal-all&quot; </span><span class="s2">class</span><span class="s3">=&quot;action&quot;</span><span class="s0">&gt;</span><span class="s1">모든 추천 받기</span><span class="s0">&lt;/button&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;year-filter-bar&quot; </span><span class="s2">id</span><span class="s3">=&quot;year-bar-personal&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;1999-2005&quot;</span><span class="s0">&gt;</span><span class="s1">1999–2005</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2006-2010&quot;</span><span class="s0">&gt;</span><span class="s1">2006–2010</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2011-2015&quot;</span><span class="s0">&gt;</span><span class="s1">2011–2015</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2016-2020&quot;</span><span class="s0">&gt;</span><span class="s1">2016–2020</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2021-&quot;</span><span class="s0">&gt;</span><span class="s1">2021~</span><span class="s0">&lt;/button&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;recommend-container&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;recommend-box&quot; </span><span class="s2">data-box</span><span class="s3">=&quot;content&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;h3&gt;</span><span class="s1">내가 좋아하는 노래의 또 다른 이야기</span><span class="s0">&lt;/h3&gt;</span>
+                <span class="s0">&lt;ul </span><span class="s2">id</span><span class="s3">=&quot;cf-results&quot;</span><span class="s0">&gt;&lt;/ul&gt;</span>
+            <span class="s0">&lt;/div&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;recommend-box&quot; </span><span class="s2">data-box</span><span class="s3">=&quot;collab&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;h3&gt;</span><span class="s1">같이 좋아한 그 노래, 그리고 그 다음</span><span class="s0">&lt;/h3&gt;</span>
+                <span class="s0">&lt;ul </span><span class="s2">id</span><span class="s3">=&quot;collab-results&quot;</span><span class="s0">&gt;&lt;/ul&gt;</span>
+            <span class="s0">&lt;/div&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;recommend-box&quot; </span><span class="s2">data-box</span><span class="s3">=&quot;hybrid&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;h3&gt;</span><span class="s1">하이브리드 선곡</span><span class="s0">&lt;/h3&gt;</span>
+                <span class="s0">&lt;ul </span><span class="s2">id</span><span class="s3">=&quot;hybrid-results&quot;</span><span class="s0">&gt;&lt;/ul&gt;</span>
+            <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;/section&gt;</span>
+
+    <span class="s4">&lt;!-- Theme --&gt;</span>
+    <span class="s0">&lt;section </span><span class="s2">id</span><span class="s3">=&quot;theme&quot; </span><span class="s2">class</span><span class="s3">=&quot;content-section&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;toolbar&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">id</span><span class="s3">=&quot;user-name-theme&quot; </span><span class="s2">placeholder</span><span class="s3">=&quot;사용자 이름 입력 (예: 봉지훈)&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">id</span><span class="s3">=&quot;query&quot; </span><span class="s2">placeholder</span><span class="s3">=&quot;추천받고 싶은 키워드를 입력하세요&quot; </span><span class="s0">/&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">id</span><span class="s3">=&quot;btn-theme-all&quot; </span><span class="s2">class</span><span class="s3">=&quot;action&quot;</span><span class="s0">&gt;</span><span class="s1">모든 추천 받기</span><span class="s0">&lt;/button&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;year-filter-bar&quot; </span><span class="s2">id</span><span class="s3">=&quot;year-bar-theme&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;1999-2005&quot;</span><span class="s0">&gt;</span><span class="s1">1999–2005</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2006-2010&quot;</span><span class="s0">&gt;</span><span class="s1">2006–2010</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2011-2015&quot;</span><span class="s0">&gt;</span><span class="s1">2011–2015</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2016-2020&quot;</span><span class="s0">&gt;</span><span class="s1">2016–2020</span><span class="s0">&lt;/button&gt;</span>
+            <span class="s0">&lt;button </span><span class="s2">class</span><span class="s3">=&quot;year-btn&quot; </span><span class="s2">data-range</span><span class="s3">=&quot;2021-&quot;</span><span class="s0">&gt;</span><span class="s1">2021~</span><span class="s0">&lt;/button&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+
+        <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;recommend-container&quot;</span><span class="s0">&gt;</span>
+            <span class="s0">&lt;div </span><span class="s2">class</span><span class="s3">=&quot;recommend-box&quot; </span><span class="s2">data-box</span><span class="s3">=&quot;theme&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;h3&gt;</span><span class="s1">테마 기반 추천 시스템</span><span class="s0">&lt;/h3&gt;</span>
+                <span class="s0">&lt;ul </span><span class="s2">id</span><span class="s3">=&quot;theme-result-list&quot;</span><span class="s0">&gt;&lt;/ul&gt;</span>
+            <span class="s0">&lt;/div&gt;</span>
+        <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;/section&gt;</span>
+    <span class="s0">&lt;script </span><span class="s2">src</span><span class="s3">=&quot;/recommendation.js&quot; </span><span class="s2">th:src</span><span class="s3">=&quot;@{/recommendation.js}&quot; </span><span class="s2">defer</span><span class="s0">&gt;&lt;/script&gt;</span>
+<span class="s0">&lt;/main&gt;</span>
+<span class="s0">&lt;/body&gt;</span>
+<span class="s0">&lt;/html&gt;</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<html>
+<head>
+<title>recommendation.css</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #7a7e85;}
+.s1 { color: #bcbec4;}
+.s2 { color: #2aacb8;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+recommendation.css</font>
+</center></td></tr></table>
+<pre><span class="s0">/* ===== 기본 ===== */</span>
+<span class="s1">body { font-family: Arial, sans-serif; margin: </span><span class="s2">0</span><span class="s1">; }</span>
+<span class="s1">header { background-color: #</span><span class="s2">333</span><span class="s1">; color: white; padding: </span><span class="s2">10</span><span class="s1">px; position: sticky; top: </span><span class="s2">0</span><span class="s1">; z-index: </span><span class="s2">999</span><span class="s1">; }</span>
+<span class="s1">nav { display: flex; justify-content: center; gap: </span><span class="s2">20</span><span class="s1">px; margin-top: </span><span class="s2">10</span><span class="s1">px; }</span>
+<span class="s1">nav button { padding: </span><span class="s2">10</span><span class="s1">px </span><span class="s2">20</span><span class="s1">px; background-color: #</span><span class="s2">555</span><span class="s1">; color: white; border: none; cursor: pointer; }</span>
+<span class="s1">nav button:hover { background-color: #</span><span class="s2">777</span><span class="s1">; }</span>
+
+<span class="s1">.content-section { display: none; padding: </span><span class="s2">20</span><span class="s1">px; }</span>
+<span class="s1">.content-section.active { display: block; }</span>
+
+<span class="s0">/* ===== 연도 필터 바 ===== */</span>
+<span class="s1">.year-filter-bar {</span>
+  <span class="s1">display: flex;</span>
+  <span class="s1">justify-content: center;</span>
+  <span class="s1">gap: </span><span class="s2">8</span><span class="s1">px;</span>
+  <span class="s1">flex-wrap: wrap;</span>
+  <span class="s1">margin: </span><span class="s2">0 </span><span class="s1">auto </span><span class="s2">14</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.year-filter-bar .year-btn {</span>
+  <span class="s1">padding: </span><span class="s2">6</span><span class="s1">px </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">border: </span><span class="s2">1</span><span class="s1">px solid #ccc;</span>
+  <span class="s1">border-radius: </span><span class="s2">14</span><span class="s1">px;</span>
+  <span class="s1">background: #fff;</span>
+  <span class="s1">cursor: pointer;</span>
+  <span class="s1">font-size: </span><span class="s2">12</span><span class="s1">px;</span>
+  <span class="s1">line-height: </span><span class="s2">1</span><span class="s1">;</span>
+<span class="s1">}</span>
+<span class="s1">.year-btn.selected {</span>
+  <span class="s1">border: </span><span class="s2">2</span><span class="s1">px solid #</span><span class="s2">000</span><span class="s1">;</span>
+  <span class="s1">background: #fff;</span>
+<span class="s1">}</span>
+
+<span class="s0">/* ===== 툴바 ===== */</span>
+<span class="s1">.toolbar {</span>
+  <span class="s1">display: flex;</span>
+  <span class="s1">justify-content: center;</span>
+  <span class="s1">align-items: center;</span>
+  <span class="s1">gap: </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">flex-wrap: wrap;</span>
+  <span class="s1">margin: </span><span class="s2">0 </span><span class="s1">auto </span><span class="s2">20</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.toolbar input[type=</span><span class="s3">&quot;text&quot;</span><span class="s1">] {</span>
+  <span class="s1">padding: </span><span class="s2">8</span><span class="s1">px </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">min-width: </span><span class="s2">220</span><span class="s1">px;</span>
+  <span class="s1">max-width: </span><span class="s2">420</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.toolbar button.action {</span>
+  <span class="s1">padding: </span><span class="s2">8</span><span class="s1">px </span><span class="s2">14</span><span class="s1">px;</span>
+  <span class="s1">border: </span><span class="s2">1</span><span class="s1">px solid #aaa;</span>
+  <span class="s1">background: #f7f7f7;</span>
+  <span class="s1">cursor: pointer;</span>
+<span class="s1">}</span>
+<span class="s1">.toolbar button.action:hover { background: #eee; }</span>
+
+<span class="s0">/* ===== 컨테이너/박스 ===== */</span>
+<span class="s1">.recommend-container { display: flex; justify-content: center; gap: </span><span class="s2">20</span><span class="s1">px; flex-wrap: nowrap; }</span>
+<span class="s1">.recommend-box {</span>
+  <span class="s1">display: flex; flex-direction: column; justify-content: flex-start;</span>
+  <span class="s1">flex: </span><span class="s2">1</span><span class="s1">; min-width: </span><span class="s2">300</span><span class="s1">px; max-width: </span><span class="s2">400</span><span class="s1">px; border: </span><span class="s2">1</span><span class="s1">px solid #ccc; border-radius: </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">padding: </span><span class="s2">20</span><span class="s1">px; background-color: #f9f9f9; text-align: center; box-sizing: border-box; align-items: stretch;</span>
+<span class="s1">}</span>
+<span class="s1">@media (max-width: </span><span class="s2">950</span><span class="s1">px) {</span>
+  <span class="s1">.recommend-container { flex-direction: column; align-items: center; }</span>
+  <span class="s1">.recommend-box { width: </span><span class="s2">90</span><span class="s1">% !important; max-width: </span><span class="s2">500</span><span class="s1">px; }</span>
+  <span class="s1">input, button { width: auto; }</span>
+<span class="s1">}</span>
+
+<span class="s0">/* ===== 제목 라인: 타이틀 + 정확도 배지 + 박스 전용 컨트롤 ===== */</span>
+<span class="s1">.box-header {</span>
+  <span class="s1">display: grid;</span>
+  <span class="s1">grid-template-columns: </span><span class="s2">1</span><span class="s1">fr auto;</span>
+  <span class="s1">align-items: center;</span>
+  <span class="s1">gap: </span><span class="s2">8</span><span class="s1">px;</span>
+  <span class="s1">margin-bottom: </span><span class="s2">10</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.precision-badge {</span>
+  <span class="s1">font-size: </span><span class="s2">12</span><span class="s1">px;</span>
+  <span class="s1">color: #</span><span class="s2">333</span><span class="s1">;</span>
+  <span class="s1">background: #eaeaea;</span>
+  <span class="s1">border: </span><span class="s2">1</span><span class="s1">px solid #d0d0d0;</span>
+  <span class="s1">border-radius: </span><span class="s2">12</span><span class="s1">px;</span>
+  <span class="s1">padding: </span><span class="s2">4</span><span class="s1">px </span><span class="s2">8</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.box-controls {</span>
+  <span class="s1">display: flex;</span>
+  <span class="s1">gap: </span><span class="s2">6</span><span class="s1">px;</span>
+  <span class="s1">justify-content: center;</span>
+  <span class="s1">margin-bottom: </span><span class="s2">10</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.box-controls button {</span>
+  <span class="s1">padding: </span><span class="s2">6</span><span class="s1">px </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">border: </span><span class="s2">1</span><span class="s1">px solid #aaa;</span>
+  <span class="s1">background: #fff;</span>
+  <span class="s1">cursor: pointer;</span>
+  <span class="s1">border-radius: </span><span class="s2">6</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.box-controls button:hover { background: #f2f2f2; }</span>
+
+<span class="s0">/* ===== 리스트/아이템 ===== */</span>
+<span class="s1">ul { padding-left: </span><span class="s2">0</span><span class="s1">; list-style-type: none; margin: </span><span class="s2">0</span><span class="s1">; }</span>
+<span class="s1">.item-row {</span>
+  <span class="s1">position: relative;              </span><span class="s0">/* 배지 위치용 */</span>
+  <span class="s1">display: grid;</span>
+  <span class="s1">grid-template-columns: </span><span class="s2">1</span><span class="s1">fr auto;</span>
+  <span class="s1">align-items: center;</span>
+  <span class="s1">gap: </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">padding: </span><span class="s2">8</span><span class="s1">px </span><span class="s2">0</span><span class="s1">;</span>
+  <span class="s1">border-bottom: </span><span class="s2">1</span><span class="s1">px solid rgba(</span><span class="s2">0</span><span class="s1">,</span><span class="s2">0</span><span class="s1">,</span><span class="s2">0</span><span class="s1">,</span><span class="s2">0.08</span><span class="s1">);</span>
+<span class="s1">}</span>
+<span class="s1">.item-meta { text-align: left; }</span>
+<span class="s1">.item-actions { text-align: right; }</span>
+
+<span class="s0">/* 오른쪽 위 점수 배지 */</span>
+<span class="s1">.item-score-badge{</span>
+  <span class="s1">position: absolute;</span>
+  <span class="s1">top: </span><span class="s2">6</span><span class="s1">px;</span>
+  <span class="s1">right: </span><span class="s2">6</span><span class="s1">px;</span>
+  <span class="s1">font-size: </span><span class="s2">12</span><span class="s1">px;</span>
+  <span class="s1">color: #</span><span class="s2">333</span><span class="s1">;</span>
+  <span class="s1">background: #eaeaea;</span>
+  <span class="s1">border: </span><span class="s2">1</span><span class="s1">px solid #d0d0d0;</span>
+  <span class="s1">border-radius: </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">padding: </span><span class="s2">2</span><span class="s1">px </span><span class="s2">6</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.item-score-badge.on{</span>
+  <span class="s1">background: #</span><span class="s2">4</span><span class="s1">CAF50;</span>
+  <span class="s1">border-color: #</span><span class="s2">4</span><span class="s1">CAF50;</span>
+  <span class="s1">color: #fff;</span>
+  <span class="s1">font-weight: </span><span class="s2">600</span><span class="s1">;</span>
+<span class="s1">}</span>
+
+<span class="s0">/* ===== 선택 버튼 (토글) ===== */</span>
+<span class="s1">.select-btn {</span>
+  <span class="s1">padding: </span><span class="s2">6</span><span class="s1">px </span><span class="s2">10</span><span class="s1">px;</span>
+  <span class="s1">border: </span><span class="s2">1</span><span class="s1">px solid #</span><span class="s2">888</span><span class="s1">;</span>
+  <span class="s1">background: #f5f5f5;</span>
+  <span class="s1">cursor: pointer;</span>
+  <span class="s1">border-radius: </span><span class="s2">6</span><span class="s1">px;</span>
+  <span class="s1">font-size: </span><span class="s2">13</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.select-btn.selected {</span>
+  <span class="s1">background: #</span><span class="s2">4</span><span class="s1">CAF50;</span>
+  <span class="s1">color: #fff;</span>
+  <span class="s1">border-color: #</span><span class="s2">4</span><span class="s1">CAF50;</span>
+  <span class="s1">font-weight: bold;</span>
+<span class="s1">}</span>
+
+<span class="s0">/* ===== 제출/진행 &amp; 리스트 1~10 평가 ===== */</span>
+<span class="s1">.overall-rating {            </span><span class="s0">/* ← 보이도록 복원 */</span>
+  <span class="s1">margin-top: </span><span class="s2">12</span><span class="s1">px;</span>
+  <span class="s1">font-size: </span><span class="s2">14</span><span class="s1">px;</span>
+  <span class="s1">text-align: center;</span>
+<span class="s1">}</span>
+<span class="s1">.rating-buttons{</span>
+  <span class="s1">display: flex;</span>
+  <span class="s1">justify-content: center;</span>
+  <span class="s1">gap: </span><span class="s2">6</span><span class="s1">px;</span>
+  <span class="s1">flex-wrap: wrap;</span>
+  <span class="s1">margin-top: </span><span class="s2">6</span><span class="s1">px;</span>
+<span class="s1">}</span>
+<span class="s1">.rating-buttons button{</span>
+  <span class="s1">padding: </span><span class="s2">5</span><span class="s1">px </span><span class="s2">8</span><span class="s1">px;</span>
+  <span class="s1">font-size: </span><span class="s2">14</span><span class="s1">px;</span>
+  <span class="s1">cursor: pointer;</span>
+  <span class="s1">border: </span><span class="s2">1</span><span class="s1">px solid #</span><span class="s2">888</span><span class="s1">;</span>
+  <span class="s1">border-radius: </span><span class="s2">5</span><span class="s1">px;</span>
+  <span class="s1">background-color: #f0f0f0;</span>
+<span class="s1">}</span>
+<span class="s1">.rating-buttons button.selected{</span>
+  <span class="s1">background-color: gold;</span>
+  <span class="s1">color: #</span><span class="s2">000</span><span class="s1">;</span>
+  <span class="s1">font-weight: bold;</span>
+<span class="s1">}</span>
+
+<span class="s1">.rating-progress { margin-top: </span><span class="s2">8</span><span class="s1">px; font-size: </span><span class="s2">13</span><span class="s1">px; color: #</span><span class="s2">555</span><span class="s1">; text-align:center; }</span>
+<span class="s1">.submit-button {</span>
+  <span class="s1">margin: </span><span class="s2">12</span><span class="s1">px auto </span><span class="s2">0</span><span class="s1">; padding: </span><span class="s2">8</span><span class="s1">px </span><span class="s2">20</span><span class="s1">px; background-color: #</span><span class="s2">4</span><span class="s1">CAF50; color: white;</span>
+  <span class="s1">font-size: </span><span class="s2">14</span><span class="s1">px; border: none; border-radius: </span><span class="s2">5</span><span class="s1">px; cursor: pointer; display: block;</span>
+<span class="s1">}</span>
+</pre>
+</body>
+</html>

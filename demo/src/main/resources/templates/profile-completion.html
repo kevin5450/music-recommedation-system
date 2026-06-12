@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pick Your Songs — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+  </nav>
+
+  <main class="auth-main">
+    <section class="auth-card auth-card--wide">
+
+      <h1 class="auth-title">Pick Your Songs</h1>
+      <p class="auth-subtitle">Select at least 5 songs you love so we can personalize your experience</p>
+
+      <div class="error-banner" th:if="${error}">
+        <p th:text="${error}"></p>
+      </div>
+
+      <form action="/save-first-five" method="post" class="song-picker-form">
+        <ul class="song-picker-list">
+          <li class="song-picker-item" th:each="song : ${songs}">
+            <label class="song-picker-label">
+              <input type="checkbox" name="selectedSongs" th:value="${song.id}">
+              <span class="song-picker-title" th:text="${song.title}"></span>
+              <span class="song-picker-artist" th:text="${song.artist}"></span>
+            </label>
+          </li>
+        </ul>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Continue</button>
+          <button type="submit" name="skip" value="true" class="btn-ghost">Skip for now</button>
+        </div>
+      </form>
+
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Fluffy Music. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

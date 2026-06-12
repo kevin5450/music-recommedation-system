@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>RegisterController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RegisterController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">User</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">UserRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Controller</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">Model</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">GetMapping</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">PostMapping</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">RequestParam</span><span class="s2">;</span>
+
+<span class="s1">@Controller</span>
+<span class="s0">public class </span><span class="s1">RegisterController </span><span class="s2">{</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">UserRepository userRepository</span><span class="s2">;</span>
+
+    <span class="s3">// 회원가입 페이지 요청 (GET)</span>
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s4">&quot;/register&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String showRegisterPage</span><span class="s2">() {</span>
+        <span class="s0">return </span><span class="s4">&quot;register&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s3">// 회원가입 처리 (POST)</span>
+    <span class="s1">@PostMapping</span><span class="s2">(</span><span class="s4">&quot;/register&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String registerUser</span><span class="s2">(</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;userid&quot;</span><span class="s2">) </span><span class="s1">String userid</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;fullname&quot;</span><span class="s2">) </span><span class="s1">String fullname</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;email&quot;</span><span class="s2">) </span><span class="s1">String email</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;password&quot;</span><span class="s2">) </span><span class="s1">String password</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;passwordConfirm&quot;</span><span class="s2">) </span><span class="s1">String passwordConfirm</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;nickname&quot;</span><span class="s2">) </span><span class="s1">String nickname</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;birthdate&quot;</span><span class="s2">) </span><span class="s1">String birthdate</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s4">&quot;phone&quot;</span><span class="s2">) </span><span class="s1">String phone</span><span class="s2">,</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s1">value </span><span class="s2">= </span><span class="s4">&quot;newsletter&quot;</span><span class="s2">, </span><span class="s1">defaultValue </span><span class="s2">= </span><span class="s4">&quot;false&quot;</span><span class="s2">) </span><span class="s0">boolean </span><span class="s1">newsletter</span><span class="s2">,</span>
+            <span class="s1">Model model</span><span class="s2">) {</span>
+
+
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;userid&quot;</span><span class="s2">, </span><span class="s1">userid</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;fullname&quot;</span><span class="s2">, </span><span class="s1">fullname</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;email&quot;</span><span class="s2">, </span><span class="s1">email</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;password&quot;</span><span class="s2">, </span><span class="s1">password</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;passwordConfirm&quot;</span><span class="s2">, </span><span class="s1">passwordConfirm</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;nickname&quot;</span><span class="s2">, </span><span class="s1">nickname</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;birthdate&quot;</span><span class="s2">, </span><span class="s1">birthdate</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;phone&quot;</span><span class="s2">, </span><span class="s1">phone</span><span class="s2">);</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;newsletter&quot;</span><span class="s2">, </span><span class="s1">newsletter</span><span class="s2">);</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">existsByUserid</span><span class="s2">(</span><span class="s1">userid</span><span class="s2">)) {</span>
+            <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;error&quot;</span><span class="s2">, </span><span class="s4">&quot;이미 존재하는 아이디입니다.&quot;</span><span class="s2">);</span>
+            <span class="s0">return </span><span class="s4">&quot;register&quot;</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">userRepository</span><span class="s2">.</span><span class="s1">existsByEmail</span><span class="s2">(</span><span class="s1">email</span><span class="s2">)) {</span>
+            <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;error&quot;</span><span class="s2">, </span><span class="s4">&quot;이미 사용 중인 이메일입니다.&quot;</span><span class="s2">);</span>
+            <span class="s0">return </span><span class="s4">&quot;register&quot;</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s3">// 비밀번호 확인</span>
+        <span class="s0">if </span><span class="s2">(!</span><span class="s1">password</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s1">passwordConfirm</span><span class="s2">)) {</span>
+            <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;error&quot;</span><span class="s2">, </span><span class="s4">&quot;비밀번호가 일치하지 않습니다.&quot;</span><span class="s2">);</span>
+            <span class="s0">return </span><span class="s4">&quot;register&quot;</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s3">// User 객체 생성 및 저장</span>
+        <span class="s1">User newUser </span><span class="s2">= </span><span class="s0">new </span><span class="s1">User</span><span class="s2">(</span><span class="s1">userid</span><span class="s2">, </span><span class="s1">fullname</span><span class="s2">, </span><span class="s1">email</span><span class="s2">, </span><span class="s1">password</span><span class="s2">, </span><span class="s1">nickname</span><span class="s2">, </span><span class="s1">birthdate</span><span class="s2">, </span><span class="s1">phone</span><span class="s2">, </span><span class="s1">newsletter</span><span class="s2">);</span>
+        <span class="s1">userRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">newUser</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s4">&quot;redirect:/profile-completion&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

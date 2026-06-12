@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/register.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <div class="navbar-links">
+      <a href="/login">Sign In</a>
+    </div>
+  </nav>
+
+  <main class="auth-main">
+    <section class="auth-card auth-card--wide">
+
+      <h1 class="auth-title">Create Your Account</h1>
+      <p class="auth-subtitle">Join Fluffy Music today</p>
+
+      <div th:if="${error}" class="error-banner">
+        <p th:text="${error}"></p>
+      </div>
+
+      <form th:action="@{/register}" method="post" class="auth-form">
+
+        <div class="form-section">
+          <h2 class="form-section-title">Account Info</h2>
+          <div class="form-group">
+            <label for="userid">User ID</label>
+            <input id="userid" name="userid" type="text" placeholder="Choose a user ID"
+                   th:value="${userid}" maxlength="10" required>
+          </div>
+          <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input id="fullname" name="fullname" type="text" placeholder="Your full name"
+                   th:value="${fullname}" maxlength="10" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="your@email.com"
+                   th:value="${email}" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" placeholder="Create a password"
+                   th:value="${password}" required>
+          </div>
+          <div class="form-group">
+            <label for="passwordConfirm">Confirm Password</label>
+            <input id="passwordConfirm" name="passwordConfirm" type="password"
+                   placeholder="Repeat your password" th:value="${passwordConfirm}" required>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2 class="form-section-title">Profile</h2>
+          <div class="form-group">
+            <label for="nickname">Nickname</label>
+            <input id="nickname" name="nickname" type="text" placeholder="What should we call you?"
+                   th:value="${nickname}" maxlength="10" required>
+          </div>
+          <div class="form-group">
+            <label for="birthdate">Date of Birth</label>
+            <input id="birthdate" name="birthdate" type="date" th:value="${birthdate}" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel" placeholder="010-0000-0000"
+                   th:value="${phone}" required>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2 class="form-section-title">Preferences</h2>
+          <div class="form-check">
+            <input id="newsletter" name="newsletter" type="checkbox" value="yes">
+            <label for="newsletter">[Optional] Receive Fluffy Music newsletter</label>
+          </div>
+          <div class="form-check">
+            <input id="agree" name="agree" type="checkbox" value="yes" required>
+            <label for="agree">[Required] I agree to the <a href="#" class="link-primary">Terms</a> and <a href="#" class="link-primary">Privacy Policy</a></label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Create Account</button>
+
+      </form>
+
+      <div class="auth-footer">
+        <span>Already have an account?</span>
+        <a href="/login" class="link-primary">Sign in</a>
+      </div>
+
+    </section>
+  </main>
+
+</body>
+</html>

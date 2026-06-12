@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account Settings — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/settings.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <div class="navbar-links">
+      <a href="/Mainpage">Home</a>
+      <a href="/Settings">Settings</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <div class="page-back">
+      <a href="/Settings" class="back-link">← Settings</a>
+    </div>
+
+    <section class="page-header">
+      <h1 class="page-title">Account</h1>
+      <p class="page-subtitle">Manage your account information</p>
+    </section>
+
+    <section class="settings-form-section">
+      <form class="auth-form" method="post" th:action="@{/settings-account}">
+        <div class="form-group">
+          <label for="nickname">Nickname</label>
+          <input id="nickname" name="nickname" type="text" placeholder="Your nickname">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input id="phone" name="phone" type="tel" placeholder="010-0000-0000">
+        </div>
+        <div class="form-group">
+          <label for="password">New Password</label>
+          <input id="password" name="password" type="password" placeholder="Leave blank to keep current">
+        </div>
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Fluffy Music. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

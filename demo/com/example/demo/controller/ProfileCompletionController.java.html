@@ -1,0 +1,95 @@
+<html>
+<head>
+<title>ProfileCompletionController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #5f826b; font-style: italic;}
+.s4 { color: #6aab73;}
+.s5 { color: #7a7e85;}
+.s6 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+ProfileCompletionController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">Music</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">FirstFiveSongs</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">MusicRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">FirstFiveSongsRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Controller</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">Model</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.*;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Collections</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">.</span><span class="s1">Collectors</span><span class="s2">;</span>
+
+<span class="s1">@Controller</span>
+<span class="s0">public class </span><span class="s1">ProfileCompletionController </span><span class="s2">{</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">MusicRepository musicRepository</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">FirstFiveSongsRepository firstFiveSongsRepository</span><span class="s2">;</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* 프로필 완료 페이지 - MongoDB에서 인기 있는 노래를 가져와서 랜덤으로 30곡 표시</span>
+     <span class="s3">*/</span>
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s4">&quot;/profile-completion&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String showProfileCompletionPage</span><span class="s2">(</span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s5">// MongoDB에서 popularity가 60 이상인 곡 조회</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Music</span><span class="s2">&gt; </span><span class="s1">allPopularSongs </span><span class="s2">= </span><span class="s1">musicRepository</span><span class="s2">.</span><span class="s1">findByPopularityGreaterThanEqual</span><span class="s2">(</span><span class="s6">60</span><span class="s2">);</span>
+
+        <span class="s5">// 리스트를 섞고 상위 30곡 가져오기</span>
+        <span class="s1">Collections</span><span class="s2">.</span><span class="s1">shuffle</span><span class="s2">(</span><span class="s1">allPopularSongs</span><span class="s2">);</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Music</span><span class="s2">&gt; </span><span class="s1">randomSongs </span><span class="s2">= </span><span class="s1">allPopularSongs</span><span class="s2">.</span><span class="s1">subList</span><span class="s2">(</span><span class="s6">0</span><span class="s2">, </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s6">30</span><span class="s2">, </span><span class="s1">allPopularSongs</span><span class="s2">.</span><span class="s1">size</span><span class="s2">()));</span>
+
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s4">&quot;songs&quot;</span><span class="s2">, </span><span class="s1">randomSongs</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s4">&quot;profile-completion&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s3">/**</span>
+     <span class="s3">* 유저가 선택한 5곡 저장 또는 자동 선택 후 저장</span>
+     <span class="s3">*/</span>
+    <span class="s1">@PostMapping</span><span class="s2">(</span><span class="s4">&quot;/save-first-five&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String saveFirstFiveSongs</span><span class="s2">(</span>
+            <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s1">value </span><span class="s2">= </span><span class="s4">&quot;selectedSongs&quot;</span><span class="s2">, </span><span class="s1">required </span><span class="s2">= </span><span class="s0">false</span><span class="s2">) </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">selectedSongIds</span><span class="s2">,</span>
+            <span class="s1">Model model</span><span class="s2">) {</span>
+
+        <span class="s5">// 유저가 5곡을 선택하지 않은 경우, MongoDB에서 랜덤으로 5곡 가져오기</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">selectedSongIds </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">selectedSongIds</span><span class="s2">.</span><span class="s1">size</span><span class="s2">() &lt; </span><span class="s6">5</span><span class="s2">) {</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Music</span><span class="s2">&gt; </span><span class="s1">allPopularSongs </span><span class="s2">= </span><span class="s1">musicRepository</span><span class="s2">.</span><span class="s1">findByPopularityGreaterThanEqual</span><span class="s2">(</span><span class="s6">60</span><span class="s2">);</span>
+            <span class="s1">Collections</span><span class="s2">.</span><span class="s1">shuffle</span><span class="s2">(</span><span class="s1">allPopularSongs</span><span class="s2">);</span>
+            <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Music</span><span class="s2">&gt; </span><span class="s1">autoSelectedSongs </span><span class="s2">= </span><span class="s1">allPopularSongs</span><span class="s2">.</span><span class="s1">subList</span><span class="s2">(</span><span class="s6">0</span><span class="s2">, </span><span class="s1">Math</span><span class="s2">.</span><span class="s1">min</span><span class="s2">(</span><span class="s6">5</span><span class="s2">, </span><span class="s1">allPopularSongs</span><span class="s2">.</span><span class="s1">size</span><span class="s2">()));</span>
+
+            <span class="s5">// 자동으로 선택한 곡 ID 리스트 생성</span>
+            <span class="s1">selectedSongIds </span><span class="s2">= </span><span class="s1">autoSelectedSongs</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+                    <span class="s2">.</span><span class="s1">map</span><span class="s2">(</span><span class="s1">Music::getId</span><span class="s2">)</span>
+                    <span class="s2">.</span><span class="s1">collect</span><span class="s2">(</span><span class="s1">Collectors</span><span class="s2">.</span><span class="s1">toList</span><span class="s2">());</span>
+        <span class="s2">}</span>
+
+        <span class="s5">// 선택된 5곡을 FirstFiveSongs 테이블에 저장</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s1">String songId </span><span class="s2">: </span><span class="s1">selectedSongIds</span><span class="s2">) {</span>
+            <span class="s1">Music selectedSong </span><span class="s2">= </span><span class="s1">musicRepository</span><span class="s2">.</span><span class="s1">findById</span><span class="s2">(</span><span class="s1">songId</span><span class="s2">).</span><span class="s1">orElse</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">selectedSong </span><span class="s2">!= </span><span class="s0">null</span><span class="s2">) {</span>
+                <span class="s1">FirstFiveSongs firstSong </span><span class="s2">= </span><span class="s0">new </span><span class="s1">FirstFiveSongs</span><span class="s2">(</span><span class="s1">selectedSong</span><span class="s2">.</span><span class="s1">getTitle</span><span class="s2">(), </span><span class="s1">selectedSong</span><span class="s2">.</span><span class="s1">getArtist</span><span class="s2">());</span>
+                <span class="s1">firstFiveSongsRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">firstSong</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s4">&quot;redirect:/Mainpage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

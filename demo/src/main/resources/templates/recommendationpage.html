@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover — Fluffy Music</title>
+  <link rel="stylesheet" th:href="@{/css/global.css}">
+  <link rel="stylesheet" th:href="@{/css/recommendation.css}">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/Mainpage" class="navbar-logo">Fluffy Music</a>
+    <div class="navbar-links">
+      <a href="/Mainpage">Home</a>
+      <a href="/Mypage">My Page</a>
+      <a href="/Settings">Settings</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    <section class="page-header">
+      <h1 class="page-title">Discover</h1>
+      <p class="page-subtitle">Music picked just for you</p>
+    </section>
+
+    <div class="tab-bar">
+      <button class="tab-btn tab-btn--active" data-tab="personal">For You</button>
+      <button class="tab-btn" data-tab="theme">By Theme</button>
+    </div>
+
+    <section id="tab-personal" class="tab-content tab-content--active">
+      <div class="toolbar">
+        <input type="text" id="user-name" placeholder="Enter your username (e.g. jihoonbong)">
+        <button id="btn-personal-all" class="btn-primary">Get Recommendations</button>
+      </div>
+
+      <div class="year-filter">
+        <button class="year-btn" data-range="1999-2005">1999–2005</button>
+        <button class="year-btn" data-range="2006-2010">2006–2010</button>
+        <button class="year-btn" data-range="2011-2015">2011–2015</button>
+        <button class="year-btn" data-range="2016-2020">2016–2020</button>
+        <button class="year-btn" data-range="2021-">2021 ~</button>
+      </div>
+
+      <div class="recommend-grid">
+        <div class="recommend-card" data-box="content">
+          <h3 class="recommend-card-title">More of What You Love</h3>
+          <ul id="cf-results" class="result-list"></ul>
+        </div>
+        <div class="recommend-card" data-box="collab">
+          <h3 class="recommend-card-title">Fans Also Liked</h3>
+          <ul id="collab-results" class="result-list"></ul>
+        </div>
+        <div class="recommend-card" data-box="hybrid">
+          <h3 class="recommend-card-title">Hybrid Picks</h3>
+          <ul id="hybrid-results" class="result-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-theme" class="tab-content">
+      <div class="toolbar">
+        <input type="text" id="user-name-theme" placeholder="Enter your username">
+        <input type="text" id="query" placeholder="Enter a keyword or mood">
+        <button id="btn-theme-all" class="btn-primary">Get Recommendations</button>
+      </div>
+
+      <div class="year-filter">
+        <button class="year-btn" data-range="1999-2005">1999–2005</button>
+        <button class="year-btn" data-range="2006-2010">2006–2010</button>
+        <button class="year-btn" data-range="2011-2015">2011–2015</button>
+        <button class="year-btn" data-range="2016-2020">2016–2020</button>
+        <button class="year-btn" data-range="2021-">2021 ~</button>
+      </div>
+
+      <div class="recommend-grid">
+        <div class="recommend-card" data-box="theme">
+          <h3 class="recommend-card-title">Theme-Based Picks</h3>
+          <ul id="theme-result-list" class="result-list"></ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Fluffy Music. All rights reserved.</p>
+  </footer>
+
+  <script th:src="@{/js/recommendation.js}" defer></script>
+</body>
+</html>

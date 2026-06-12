@@ -1,0 +1,97 @@
+<html>
+<head>
+<title>Mainpage.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #d5b778;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bababa;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Mainpage.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!DOCTYPE </span><span class="s2">html</span><span class="s0">&gt;</span>
+<span class="s0">&lt;html </span><span class="s2">lang</span><span class="s3">=&quot;en&quot; </span><span class="s2">xmlns:th</span><span class="s3">=&quot;http://www.w3.org/1999/xhtml&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;head&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">charset</span><span class="s3">=&quot;UTF-8&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;viewport&quot; </span><span class="s2">content</span><span class="s3">=&quot;width=device-width, initial-scale=1.0&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;title&gt;</span><span class="s1">Main Page</span><span class="s0">&lt;/title&gt;</span>
+    <span class="s0">&lt;link </span><span class="s2">rel</span><span class="s3">=&quot;stylesheet&quot; </span><span class="s2">href</span><span class="s3">=&quot;../static/styles.css&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;/head&gt;</span>
+<span class="s0">&lt;body&gt;</span>
+
+<span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;/Mainpage&quot; </span><span class="s2">style</span><span class="s3">=&quot;text-decoration: none; color: inherit;&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;h1&gt;</span><span class="s1">Welcome to Spotify</span><span class="s0">&lt;/h1&gt;</span>
+<span class="s0">&lt;/a&gt;</span>
+
+<span class="s4">&lt;!-- 노래 추가 폼 --&gt;</span>
+<span class="s0">&lt;form </span><span class="s2">action</span><span class="s3">=&quot;/Mainpage&quot; </span><span class="s2">method</span><span class="s3">=&quot;post&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;title&quot;</span><span class="s0">&gt;</span><span class="s1">Title:</span><span class="s0">&lt;/label&gt;</span>
+    <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">id</span><span class="s3">=&quot;title&quot; </span><span class="s2">name</span><span class="s3">=&quot;title&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;artist&quot;</span><span class="s0">&gt;</span><span class="s1">Artist:</span><span class="s0">&lt;/label&gt;</span>
+    <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">id</span><span class="s3">=&quot;artist&quot; </span><span class="s2">name</span><span class="s3">=&quot;artist&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;submit&quot;</span><span class="s0">&gt;</span><span class="s1">Add songs to my playlist</span><span class="s0">&lt;/button&gt;</span>
+<span class="s0">&lt;/form&gt;</span>
+
+<span class="s4">&lt;!-- 노래 검색 폼 --&gt;</span>
+<span class="s0">&lt;form </span><span class="s2">action</span><span class="s3">=&quot;/search&quot; </span><span class="s2">method</span><span class="s3">=&quot;get&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;label </span><span class="s2">for</span><span class="s3">=&quot;query&quot;</span><span class="s0">&gt;</span><span class="s1">Search by Title or Artist:</span><span class="s0">&lt;/label&gt;</span>
+    <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;text&quot; </span><span class="s2">id</span><span class="s3">=&quot;query&quot; </span><span class="s2">name</span><span class="s3">=&quot;query&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;submit&quot;</span><span class="s0">&gt;</span><span class="s1">Search</span><span class="s0">&lt;/button&gt;</span>
+<span class="s0">&lt;/form&gt;</span>
+
+<span class="s4">&lt;!-- 검색 결과 출력 --&gt;</span>
+<span class="s0">&lt;div&gt;</span>
+    <span class="s0">&lt;div </span><span class="s2">th:if</span><span class="s3">=&quot;${error}&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;p </span><span class="s2">th:text</span><span class="s3">=&quot;${error}&quot;</span><span class="s0">&gt;&lt;/p&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+    <span class="s0">&lt;div </span><span class="s2">th:if</span><span class="s3">=&quot;${songs}&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;h2&gt;</span><span class="s1">Search Results</span><span class="s0">&lt;/h2&gt;</span>
+        <span class="s0">&lt;ul&gt;</span>
+            <span class="s0">&lt;li </span><span class="s2">th:each</span><span class="s3">=&quot;song : ${songs}&quot;</span><span class="s0">&gt;</span>
+                <span class="s0">&lt;span </span><span class="s2">th:text</span><span class="s3">=&quot;${song.title}&quot;</span><span class="s0">&gt;&lt;/span&gt;</span>
+                <span class="s0">&lt;form </span><span class="s2">action</span><span class="s3">=&quot;/save&quot; </span><span class="s2">method</span><span class="s3">=&quot;post&quot; </span><span class="s2">style</span><span class="s3">=&quot;display:inline;&quot;</span><span class="s0">&gt;</span>
+                    <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;hidden&quot; </span><span class="s2">name</span><span class="s3">=&quot;title&quot; </span><span class="s2">th:value</span><span class="s3">=&quot;${song.title}&quot;</span><span class="s0">&gt;</span>
+                    <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;hidden&quot; </span><span class="s2">name</span><span class="s3">=&quot;artist&quot; </span><span class="s2">th:value</span><span class="s3">=&quot;${song.artist}&quot;</span><span class="s0">&gt;</span>
+                    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;submit&quot;</span><span class="s0">&gt;</span><span class="s1">Save</span><span class="s0">&lt;/button&gt;</span>
+                <span class="s0">&lt;/form&gt;</span>
+                <span class="s0">&lt;span </span><span class="s2">th:text</span><span class="s3">=&quot;${song.artist}&quot;</span><span class="s0">&gt;&lt;/span&gt;</span>
+                <span class="s0">&lt;form </span><span class="s2">action</span><span class="s3">=&quot;/save-artist&quot; </span><span class="s2">method</span><span class="s3">=&quot;post&quot; </span><span class="s2">style</span><span class="s3">=&quot;display:inline;&quot;</span><span class="s0">&gt;</span>
+                    <span class="s0">&lt;input </span><span class="s2">type</span><span class="s3">=&quot;hidden&quot; </span><span class="s2">name</span><span class="s3">=&quot;artist&quot; </span><span class="s2">th:value</span><span class="s3">=&quot;${song.artist}&quot;</span><span class="s0">&gt;</span>
+                    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;submit&quot;</span><span class="s0">&gt;</span><span class="s1">Save</span><span class="s0">&lt;/button&gt;</span>
+                <span class="s0">&lt;/form&gt;</span>
+            <span class="s0">&lt;/li&gt;</span>
+        <span class="s0">&lt;/ul&gt;</span>
+    <span class="s0">&lt;/div&gt;</span>
+<span class="s0">&lt;/div&gt;</span>
+
+
+<span class="s4">&lt;!-- 플레이리스트 이동 버튼 --&gt;</span>
+<span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;/Mypage&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;button&quot;</span><span class="s0">&gt;</span><span class="s1">Go to My page</span><span class="s0">&lt;/button&gt;</span>
+<span class="s0">&lt;/a&gt;</span>
+<span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;/recommendationpage&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;button&quot;</span><span class="s0">&gt;</span><span class="s1">Go to My Recommendation page</span><span class="s0">&lt;/button&gt;</span>
+<span class="s0">&lt;/a&gt;</span>
+<span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;https://charts.spotify.com/charts/overview/global&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;button&quot;</span><span class="s0">&gt;</span><span class="s1">Chart</span><span class="s0">&lt;/button&gt;</span>
+<span class="s0">&lt;/a&gt;</span>
+<span class="s0">&lt;a </span><span class="s2">href</span><span class="s3">=&quot;Settings&quot;</span><span class="s0">&gt;</span>
+    <span class="s0">&lt;button </span><span class="s2">type</span><span class="s3">=&quot;button&quot;</span><span class="s0">&gt;</span><span class="s1">Settings</span><span class="s0">&lt;/button&gt;</span>
+<span class="s0">&lt;/a&gt;</span>
+<span class="s0">&lt;h2&gt;</span><span class="s1">Recommended songs by artist</span><span class="s0">&lt;/h2&gt;</span>
+<span class="s0">&lt;ul&gt;</span>
+    <span class="s0">&lt;li </span><span class="s2">th:each</span><span class="s3">=&quot;artist : ${artists}&quot;</span><span class="s0">&gt;</span>
+        <span class="s0">&lt;span </span><span class="s2">th:text</span><span class="s3">=&quot;${artist.artist}&quot;</span><span class="s0">&gt;&lt;/span&gt;</span>
+    <span class="s0">&lt;/li&gt;</span>
+<span class="s0">&lt;/ul&gt;</span>
+<span class="s0">&lt;/body&gt;</span>
+<span class="s0">&lt;/html&gt;</span></pre>
+</body>
+</html>

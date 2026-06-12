@@ -1,0 +1,118 @@
+<html>
+<head>
+<title>MusicController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MusicController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">LikedArtist</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">MyPlaylist</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">model</span><span class="s2">.</span><span class="s1">Music</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">LikedArtistRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">MyPlaylistRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">com</span><span class="s2">.</span><span class="s1">example</span><span class="s2">.</span><span class="s1">demo</span><span class="s2">.</span><span class="s1">repository</span><span class="s2">.</span><span class="s1">MusicRepository</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">beans</span><span class="s2">.</span><span class="s1">factory</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.</span><span class="s1">Autowired</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">stereotype</span><span class="s2">.</span><span class="s1">Controller</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">ui</span><span class="s2">.</span><span class="s1">Model</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">springframework</span><span class="s2">.</span><span class="s1">web</span><span class="s2">.</span><span class="s1">bind</span><span class="s2">.</span><span class="s1">annotation</span><span class="s2">.*;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Optional</span><span class="s2">;</span>
+
+<span class="s1">@Controller</span>
+<span class="s0">public class </span><span class="s1">MusicController </span><span class="s2">{</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">MusicRepository songRepository</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">MyPlaylistRepository playlistRepository</span><span class="s2">;</span>
+
+    <span class="s1">@Autowired</span>
+    <span class="s0">private </span><span class="s1">LikedArtistRepository likedArtistRepository</span><span class="s2">;</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/recommendationpage&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String recommendationpage</span><span class="s2">(</span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s3">&quot;recommendationpage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/Settings&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String Settings</span><span class="s2">(</span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s0">return </span><span class="s3">&quot;Settings&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@PostMapping</span><span class="s2">(</span><span class="s3">&quot;/Mainpage&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String addSong</span><span class="s2">(</span><span class="s1">@RequestParam</span><span class="s2">(</span><span class="s3">&quot;title&quot;</span><span class="s2">) </span><span class="s1">String title</span><span class="s2">,</span>
+                          <span class="s1">@RequestParam</span><span class="s2">(</span><span class="s3">&quot;artist&quot;</span><span class="s2">) </span><span class="s1">String artist</span><span class="s2">) {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">title </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">title</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">() || </span><span class="s1">artist </span><span class="s2">== </span><span class="s0">null </span><span class="s2">|| </span><span class="s1">artist</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+            <span class="s0">return </span><span class="s3">&quot;redirect:/Mainpage&quot;</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s1">Music song </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Music</span><span class="s2">();</span>
+        <span class="s1">song</span><span class="s2">.</span><span class="s1">setTitle</span><span class="s2">(</span><span class="s1">title</span><span class="s2">);</span>
+        <span class="s1">song</span><span class="s2">.</span><span class="s1">setArtist</span><span class="s2">(</span><span class="s1">artist</span><span class="s2">);</span>
+        <span class="s1">songRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">song</span><span class="s2">);</span>
+
+        <span class="s0">return </span><span class="s3">&quot;redirect:/Mainpage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/search&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String searchSongs</span><span class="s2">(</span><span class="s1">@RequestParam</span><span class="s2">(</span><span class="s1">name </span><span class="s2">= </span><span class="s3">&quot;query&quot;</span><span class="s2">, </span><span class="s1">required </span><span class="s2">= </span><span class="s0">false</span><span class="s2">) </span><span class="s1">String query</span><span class="s2">, </span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">Music</span><span class="s2">&gt; </span><span class="s1">songs </span><span class="s2">= </span><span class="s1">query </span><span class="s2">!= </span><span class="s0">null </span><span class="s2">&amp;&amp; !</span><span class="s1">query</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()</span>
+                <span class="s2">? </span><span class="s1">songRepository</span><span class="s2">.</span><span class="s1">findByTitleContainingOrArtistContainingIgnoreCase</span><span class="s2">(</span><span class="s1">query</span><span class="s2">, </span><span class="s1">query</span><span class="s2">)</span>
+                <span class="s2">: </span><span class="s0">null</span><span class="s2">;</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">songs </span><span class="s2">!= </span><span class="s0">null </span><span class="s2">&amp;&amp; !</span><span class="s1">songs</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+            <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s3">&quot;songs&quot;</span><span class="s2">, </span><span class="s1">songs</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">else </span><span class="s2">{</span>
+            <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s3">&quot;error&quot;</span><span class="s2">, </span><span class="s3">&quot;No songs found&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s0">return </span><span class="s3">&quot;Mainpage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@PostMapping</span><span class="s2">(</span><span class="s3">&quot;/save&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String save</span><span class="s2">(</span><span class="s1">@RequestParam</span><span class="s2">(</span><span class="s3">&quot;title&quot;</span><span class="s2">) </span><span class="s1">String title</span><span class="s2">, </span><span class="s1">@RequestParam</span><span class="s2">(</span><span class="s3">&quot;artist&quot;</span><span class="s2">) </span><span class="s1">String artist</span><span class="s2">) {</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">MyPlaylist</span><span class="s2">&gt; </span><span class="s1">existingSong </span><span class="s2">= </span><span class="s1">playlistRepository</span><span class="s2">.</span><span class="s1">findByTitleAndArtist</span><span class="s2">(</span><span class="s1">title</span><span class="s2">, </span><span class="s1">artist</span><span class="s2">);</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">existingSong</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+            <span class="s1">MyPlaylist newSong </span><span class="s2">= </span><span class="s0">new </span><span class="s1">MyPlaylist</span><span class="s2">(</span><span class="s1">title</span><span class="s2">, </span><span class="s1">artist</span><span class="s2">);</span>
+            <span class="s1">playlistRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">newSong</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s3">&quot;redirect:/Mainpage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@PostMapping</span><span class="s2">(</span><span class="s3">&quot;/save-artist&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String saveArtist</span><span class="s2">(</span><span class="s1">@RequestParam</span><span class="s2">(</span><span class="s3">&quot;artist&quot;</span><span class="s2">) </span><span class="s1">String artist</span><span class="s2">) {</span>
+        <span class="s1">Optional</span><span class="s2">&lt;</span><span class="s1">LikedArtist</span><span class="s2">&gt; </span><span class="s1">existingArtist </span><span class="s2">= </span><span class="s1">likedArtistRepository</span><span class="s2">.</span><span class="s1">findByArtist</span><span class="s2">(</span><span class="s1">artist</span><span class="s2">);</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">existingArtist</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+            <span class="s1">LikedArtist newArtist </span><span class="s2">= </span><span class="s0">new </span><span class="s1">LikedArtist</span><span class="s2">(</span><span class="s1">artist</span><span class="s2">);</span>
+            <span class="s1">likedArtistRepository</span><span class="s2">.</span><span class="s1">save</span><span class="s2">(</span><span class="s1">newArtist</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s3">&quot;redirect:/Mainpage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@GetMapping</span><span class="s2">(</span><span class="s3">&quot;/Mainpage&quot;</span><span class="s2">)</span>
+    <span class="s0">public </span><span class="s1">String MainpageLikedArtist</span><span class="s2">(</span><span class="s1">Model model</span><span class="s2">) {</span>
+        <span class="s1">List</span><span class="s2">&lt;</span><span class="s1">LikedArtist</span><span class="s2">&gt; </span><span class="s1">artists </span><span class="s2">= </span><span class="s1">likedArtistRepository</span><span class="s2">.</span><span class="s1">findAll</span><span class="s2">();</span>
+        <span class="s1">model</span><span class="s2">.</span><span class="s1">addAttribute</span><span class="s2">(</span><span class="s3">&quot;artists&quot;</span><span class="s2">, </span><span class="s1">artists</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s3">&quot;Mainpage&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
